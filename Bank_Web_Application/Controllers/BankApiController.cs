@@ -38,7 +38,7 @@ namespace Bank_Web_Application.Controllers
                 }
             }
 
-            return new ObjectResult(user) { StatusCode = 404 };
+            return Unauthorized();
         }
 
     }
