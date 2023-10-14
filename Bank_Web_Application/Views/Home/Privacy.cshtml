@@ -196,7 +196,6 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: left;
             justify-content: left;
         }
 
@@ -236,6 +235,10 @@
                 background: white;
             }
 
+        .scrollable-table {
+            max-height: 270px; /* Set the desired maximum height for the scrollable area */
+            overflow: auto; /* Add a scroll bar when content exceeds the maximum height */
+        }
 
         .logoutButton {
             position: absolute;
@@ -255,6 +258,14 @@
                 .logoutButton button:hover {
                     background-color: #655de8;
                 }
+
+        .error-message {
+            text-align: center;
+            color: #4F46E5;
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
 
     </style>
 
@@ -302,36 +313,39 @@
             <div class="transferMoney">
                 <p class="transferTitle">Transfer Money</p>
                 <p class="formField">Account Number</p>
-                <input type="text" id="accountNumber" class="formField">
+                <input type="text" id="recieverAccountNumber" class="formField">
                 <p class="formField">Amount</p>
-                <input type="text" id="amount" class="formField">
+                <input type="text" id="recieverAmount" class="formField">
                 <p class="formField">Description</p>
-                <textarea id="description" class="formField"></textarea>
-                <button class="sendButton">Send</button>
+                <textarea id="recieverDescription" class="formField"></textarea>
+                <button class="sendButton" onclick="sendTransaction()">Send</button>
+                <p id="errorMessage" class="error-message"></p>
             </div>
         </div>
+
+
         <div class="transactionCard card">
             <div class="transactionDetails">
                 <p class="transactionTitle">Transaction History</p>
-
-                <table class="transactionTable" id="transactions">
-                    <tr>
-                        <th>Transaction Date</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-
-                    </tr>
-                    <!-- Add more rows for additional transactions as needed -->
-                </table>
-
+                <div class="scrollable-table">
+                    <table class="transactionTable" id="transactions">
+                        <tr>
+                            <th>Transaction Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                        <!-- Add more rows for additional transactions as needed -->
+                    </table>
+                </div>
             </div>
         </div>
+
     </div>
 
     <script>
         function logout() {
 
-            window.location.href = "/Account/Login"; // Replace with the actual URL of your login page.
+            window.location.href = "/Home"; // Replace with the actual URL of your login page.
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -345,7 +359,7 @@
                 var jsonData = JSON.parse(cookieData);
 
 
-                fetchAccountDetails(jsonData.email);
+                fetchUserDetails(jsonData.email);
 
 
 
@@ -353,7 +367,7 @@
             }
         });
 
-        function fetchAccountDetails(email) {
+        function fetchUserDetails(email) {
 
             fetch("http://localhost:5237/bankApi/getUser?email=" + email)
                 .then(async response => {
@@ -365,21 +379,34 @@
                         document.getElementById("phone").textContent = jsondata.phone;
                         document.getElementById("accountNumber").textContent = jsondata.accounts[0].accountNo;
                         document.getElementById("accountBalance").textContent = jsondata.accounts[0].balance;
-                        var transactionTable = [{
-                            "transactionId": 1,
-                            "type": 0,
-                            "amount": 500,
-                            "dateTime": "2023-10-13T00:00:00",
-                            "description": null,
-                            "accountId": 1
-                        }];
-                        
+                        fetchAccounts(jsondata.accounts[0].accountId);
+
+
+                    }
+                    else {
+                        alert("Invalid Account Number");
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function fetchAccounts(accountId) {
+            fetch("http://localhost:5237/bankApi/getTransactions?id=" + accountId)
+                .then(async response => {
+                    if (response.ok) {
+                        const jsondata = await response.json();
+                        console.log(jsondata);
+                        var transactionTable = jsondata;
+
+
                         document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
                             return `<tr>
-                                <td>${transaction.dateTime}</td>
-                                <td>${transaction.description}</td>
-                                <td>${transaction.amount}</td>
-                                </tr>`;
+                                                                <td>${transaction.dateTime}</td>
+                                                                <td>${transaction.description}</td>
+                                                                <td>${transaction.amount}</td>
+                                                                </tr>`;
                         }).join('');
                     }
                     else {
@@ -388,6 +415,54 @@
                 })
                 .catch(error => {
                     console.log(error);
+                });
+        }
+
+        function sendTransaction() {
+            const accountId = document.getElementById("recieverAccountNumber").value;
+            const amount = document.getElementById("recieverAmount").value;
+            const description = document.getElementById("recieverDescription").value;
+
+            console.log(accountId, amount, description);
+
+            postTransaction(accountId, amount, description);
+        }
+
+        function postTransaction(accountId, amount, description) {
+            const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
+
+            fetch("http://localhost:5237/bankApi/deposit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "amount": amount,
+                    "accountId": accountId,
+                    "description": description,
+                    "dateTime": Date.now()
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Request failed with status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the successful response here
+                    console.log('Success! Transaction posted:', data);
+                    errorMessageElement.textContent = 'Transaction Successful!';
+                    setTimeout(function () {
+                        errorMessageElement.textContent = '';
+                    }, 2000);
+                })
+                .catch(error => {
+                    // Display the error message above the Send Button
+                    errorMessageElement.textContent = 'Error: ' + error.message;
+                    setTimeout(function () {
+                        errorMessageElement.textContent = '';
+                    }, 2000);
                 });
         }
 
