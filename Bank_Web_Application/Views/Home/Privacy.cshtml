@@ -9,29 +9,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <style>
+        /* Base Styles */
         .card {
             height: auto;
-            background: white; /* Change the background to white */
-            color: black; /* Change text color to black */
+            background: white;
+            color: black;
             border-radius: 12px;
             box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.123);
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            transition-duration: .5s;
+            transition-duration: 0.5s;
         }
 
-        .profileImage {
-            background: linear-gradient(to right, rgb(54, 54, 54), rgb(32, 32, 32));
-            margin-top: 20px;
-            margin-left: 20px;
-            margin-bottom: 20px;
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-            box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.329);
+        .welcomeMessage {
+            text-align: right;
+            margin-top: 10px;
+            margin-right: 20px;
         }
+
+            .welcomeMessage.welcomeMessage-right {
+                font-size: 2rem;
+                font-weight: 700;
+                text-align: right;
+                margin-top: auto;
+                margin-right: 20px;
+                position: absolute;
+                top: 0;
+                right: 10px;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                background: linear-gradient(45deg, #655de8, #4F46E5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+
+        .profileImage {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-left: 20px;
+        }
+
+            .profileImage img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
         .userDetails {
             width: 50%;
@@ -43,31 +71,25 @@
         }
 
         .edit-button {
-            font-weight: bold; /* Make the text bold */
-            cursor: pointer; /* Change the cursor to a pointer to indicate it's clickable */
-            color: #4F46E5; /* Change the color to blue (you can choose a different color) */
-            text-align: right;
+            font-weight: 500;
+            font-size: 0.8em;
+            cursor: pointer;
+            color: #4F46E5;
+            text-align: left;
+            margin-top: 20px;
         }
 
             .edit-button:hover {
-                text-decoration: none; /* Remove the underline on hover */
+                text-decoration: none;
             }
 
         .name {
             font-size: 1.5em;
             font-weight: 700;
-            color: black; /* Change text color to black */
-            letter-spacing: 0.5px;
-        }
-
-        .email {
-            font-size: 0.84em;
             color: black;
-            letter-spacing: 0.2px;
-            margin-bottom: 5px;
         }
 
-        .phoneNo {
+        .email, .phoneNo {
             font-size: 0.84em;
             color: black;
             letter-spacing: 0.2px;
@@ -75,20 +97,16 @@
         }
 
         .profile-card {
-            width: 100%;
-            margin-bottom: 10px;
-            flex-direction: row;
-        }
-
-        .transferCard {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            width: 25%;
+            margin-bottom: 10px;
         }
 
         .accountCard {
             width: 75%;
-            background: white; /* Change the background to white */
-            color: black; /* Change text color to black */
+            background: white;
+            color: black;
             margin-left: 10px;
             margin-bottom: 10px;
         }
@@ -103,14 +121,14 @@
         .accountDetailsTitle {
             font-size: 1.5rem;
             font-weight: 700;
-            color: black; /* Change text color to black */
+            color: black;
             letter-spacing: 0.5px;
         }
 
-        .accountTitle {
+        .accountTitle, .accountText {
             font-size: 1em;
             font-weight: 600;
-            color: black; /* Change text color to black */
+            color: black;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
             margin-left: 10px;
@@ -119,10 +137,12 @@
         .accountText {
             font-size: 0.85em;
             color: black;
+            font-weight: 400;
             letter-spacing: 0.2px;
             margin-bottom: 5px;
             margin-left: 10px;
         }
+
 
         .card-container {
             display: flex;
@@ -140,7 +160,7 @@
         .transferTitle {
             font-size: 1.5rem;
             font-weight: 700;
-            color: black; /* Change text color to black */
+            color: black;
             letter-spacing: 0.5px;
         }
 
@@ -152,6 +172,7 @@
         }
 
         .sendButton {
+            font-weight: 600;
             background-color: #4F46E5;
             color: white;
             border: none;
@@ -178,15 +199,15 @@
 
         .transactionCard {
             width: 75%;
-            background: white; /* Change the background to white */
-            color: black; /* Change text color to black */
+            background: white;
+            color: black;
             border-radius: 12px;
             box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.123);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            transition-duration: .5s;
+            transition-duration: 0.5s;
             margin-left: 10px;
         }
 
@@ -196,18 +217,17 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: left;
             justify-content: left;
         }
 
         .transactionTitle {
             font-size: 1.5em;
             font-weight: 700;
-            color: black; /* Change text color to black */
+            color: black;
             letter-spacing: 0.5px;
-            border-bottom: 1px solid black; /* Add a thin line under the title */
-            padding-bottom: 10px; /* Adjust padding as needed */
-            margin-bottom: 10px; /* Adjust margin as needed */
+            border-bottom: 1px solid black;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
         }
 
         .transactionTable {
@@ -216,7 +236,7 @@
         }
 
             .transactionTable th, .transactionTable td {
-                border: 1px solid transparent; /* Set border color to transparent */
+                border: 1px solid transparent;
                 padding: 8px;
                 text-align: left;
                 color: black;
@@ -228,78 +248,143 @@
                 letter-spacing: 0.5px;
             }
 
-            .transactionTable tr:nth-child(even) {
+            .transactionTable tr:nth-child(even), .transactionTable tr:nth-child(odd) {
                 background: white;
             }
 
-            .transactionTable tr:nth-child(odd) {
-                background: white;
-            }
-
-
-        .logoutButton {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .scrollable-table {
+            max-height: 270px;
+            overflow: auto;
         }
 
-            .logoutButton button {
-                background-color: #4F46E5;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 6px;
-                cursor: pointer;
-            }
+        .error-message {
+            text-align: center;
+            color: #4F46E5;
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
 
-                .logoutButton button:hover {
-                    background-color: #655de8;
-                }
+        .popupContainer {
+            position: fixed;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .popupShow {
+            display: flex;
+        }
+
+        .popupCard {
+            max-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popupCloseBtn {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            border: none;
+            background-color: transparent;
+        }
+
+        .editField {
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .editFieldLabel {
+            border: none;
+        }
+
+        .sendButton {
+            width: 100%; /* Make the button as long as the input fields */
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #4F46E5;
+            color: white;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+
+        .editTitle {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
 
     </style>
 
-    <script>
 
-        function logout() {
-            // Redirect the user to the login page
-            window.location.href = "/Account/Login"; // Replace "login.html" with the actual URL of your login page.
-        }
-
-
-
-    </script>
 </head>
 <body>
-    <div class="card-container">
-        <div class="card-container">
-            <div class="profile-card card">
-                <div class="profileImage">
-                    <svg viewBox="0 0 128 128"><circle r="60" fill="transparent" cy="64" cx="64"></circle><circle r="48" fill="transparent" cy="64" cx="64"></circle><path fill="#191919" d="m64 14a32 32 0 0 1 32 32v41a6 6 0 0 1 -6 6h-52a6 6 0 0 1 -6-6v-41a32 32 0 0 1 32-32z"></path><path opacity="1" fill="#191919" d="m62.73 22h2.54a23.73 23.73 0 0 1 23.73 23.73v42.82a4.45 4.45 0 0 1 -4.45 4.45h-41.1a4.45 4.45 0 0 1 -4.45-4.45v-42.82a23.73 23.73 0 0 1 23.73-23.73z"></path><circle r="7" fill="#fbc0aa" cy="65" cx="89"></circle><path fill="#4bc190" d="m64 124a59.67 59.67 0 0 0 34.69-11.06l-3.32-9.3a10 10 0 0 0 -9.37-6.64h-43.95a10 10 0 0 0 -9.42 6.64l-3.32 9.3a59.67 59.67 0 0 0 34.69 11.06z"></path><path opacity=".3" fill="#356cb6" d="m45 110 5.55 2.92-2.55 8.92a60.14 60.14 0 0 0 9 1.74v-27.08l-12.38 10.25a2 2 0 0 0 .38 3.25z"></path><path opacity=".3" fill="#356cb6" d="m71 96.5v27.09a60.14 60.14 0 0 0 9-1.74l-2.54-8.93 5.54-2.92a2 2 0 0 0 .41-3.25z"></path><path fill="#fff" d="m57 123.68a58.54 58.54 0 0 0 14 0v-25.68h-14z"></path><path stroke-width="14" stroke-linejoin="round" stroke-linecap="round" stroke="#fbc0aa" fill="none" d="m64 88.75v9.75"></path><circle r="7" fill="#fbc0aa" cy="65" cx="39"></circle><path fill="#ffd8ca" d="m64 91a25 25 0 0 1 -25-25v-16.48a25 25 0 1 1 50 0v16.48a25 25 0 0 1 -25 25z"></path><path fill="#191919" d="m91.49 51.12v-4.72c0-14.95-11.71-27.61-26.66-28a27.51 27.51 0 0 0 -28.32 27.42v5.33a2 2 0 0 0 2 2h6.81a8 8 0 0 0 6.5-3.33l4.94-6.88a18.45 18.45 0 0 1 1.37 1.63 22.84 22.84 0 0 0 17.87 8.58h13.45a2 2 0 0 0 2.04-2.03z"></path><path style="fill:none;stroke-linecap:round;stroke:#fff;stroke-miterlimit:10;stroke-width:2;opacity:.1" d="m62.76 36.94c4.24 8.74 10.71 10.21 16.09 10.21h5"></path><path style="fill:none;stroke-linecap:round;stroke:#fff;stroke-miterlimit:10;stroke-width:2;opacity:.1" d="m71 35c2.52 5.22 6.39 6.09 9.6 6.09h3"></path><circle r="3" fill="#515570" cy="62.28" cx="76"></circle><circle r="3" fill="#515570" cy="62.28" cx="52"></circle><ellipse ry="2.98" rx="4.58" opacity=".1" fill="#f85565" cy="69.67" cx="50.42"></ellipse><ellipse ry="2.98" rx="4.58" opacity=".1" fill="#f85565" cy="69.67" cx="77.58"></ellipse><g stroke-linejoin="round" stroke-linecap="round" fill="none"><path stroke-width="4" stroke="#fbc0aa" d="m64 67v4"></path><path stroke-width="2" stroke="#515570" opacity=".2" d="m55 56h-9.25"></path><path stroke-width="2" stroke="#515570" opacity=".2" d="m82 56h-9.25"></path></g><path opacity=".4" fill="#f85565" d="m64 84c5 0 7-3 7-3h-14s2 3 7 3z"></path><path fill="#f85565" d="m65.07 78.93-.55.55a.73.73 0 0 1 -1 0l-.55-.55c-1.14-1.14-2.93-.93-4.27.47l-1.7 1.6h14l-1.66-1.6c-1.34-1.4-3.13-1.61-4.27-.47z"></path></svg>
-                </div>
-                <div class="userDetails">
-                    <p class="edit-button" onclick="showEditCard()">Edit Details</p>
-
-                    <p class="name">Pepper Potts</p>
-                    <p class="email">pepper@pots.com</p>
-                    <p class="phoneNo">0777171717</p>
-                </div>
+    <div class="popupContainer" id="popup">
+        <div class="popupCard card">
+            <button class="popupCloseBtn" onclick="toggleCard()">X</button>
+            <div class="edit">
+                <p class="editTitle">Edit Details</p>
+                <p class="editFieldLabel">Password</p>
+                <input type="text" id="editName" class="editField">
+                <p class="editFieldLabel">Confirm Password</p>
+                <input type="text" id="editPhoneNo" class="editField">
+                <button class="sendButton" onclick="sendTransaction()">Edit</button>
+                <p id="errorMessage" class="error-message"></p>
             </div>
         </div>
+    </div>
+
+    <div class="card-container">
+
+        <div class="profile-card card">
+            <div class="profileImage">
+                <img src="https://picsum.photos/200/200" alt="Profile Image">
+            </div>
+            <div class="userDetails">
+                <p class="name" id="name">Pepper Potts</p>
+                <p class="email" id="email">pepper@pots.com</p>
+                <p class="phoneNo" id="phone">0777171717</p>
+                <p class="edit-button" onclick="toggleCard()">Edit Details</p>
+            </div>
+        </div>
+
         <div class="accountCard card">
             <div class="accountInfo">
                 <p class="accountDetailsTitle">Account Details</p>
                 <div class="account-details">
                     <div class="account-detail">
                         <p class="accountTitle">Account Number</p>
-                        <p class="accountText">123456789</p>
+                        <p class="accountText" id="accountNumber">0000000000</p>
                     </div>
                     <div class="account-detail">
                         <p class="accountTitle">Current Balance</p>
-                        <p class="accountText">$5,000.00</p>
+                        <p class="accountText" id="accountBalance">$ 0</p>
                     </div>
                 </div>
-                <div class="logoutButton">
-                    <button onclick="logout()">Logout</button>
+                <div class="welcomeMessage welcomeMessage-right">
+                    <!-- Add the welcomeMessage-right class -->
+                    <p class="accountText">Trust Bitcoin! It's better than your bank :)</p>
                 </div>
             </div>
         </div>
@@ -311,35 +396,169 @@
             <div class="transferMoney">
                 <p class="transferTitle">Transfer Money</p>
                 <p class="formField">Account Number</p>
-                <input type="text" id="accountNumber" class="formField">
+                <input type="text" id="recieverAccountNumber" class="formField">
                 <p class="formField">Amount</p>
-                <input type="text" id="amount" class="formField">
+                <input type="text" id="recieverAmount" class="formField">
                 <p class="formField">Description</p>
-                <textarea id="description" class="formField"></textarea>
-                <button class="sendButton">Send</button>
+                <textarea id="recieverDescription" class="formField"></textarea>
+                <button class="sendButton" onclick="sendTransaction()">Send</button>
+                <p id="errorMessage" class="error-message"></p>
             </div>
         </div>
+
+
         <div class="transactionCard card">
             <div class="transactionDetails">
                 <p class="transactionTitle">Transaction History</p>
-                <table class="transactionTable">
-                    <tr>
-                        <th>Transaction Date</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-
-                    </tr>
-                    <tr>
-                        <td>2023-10-13</td>
-                        <td>Payment for services</td>
-                        <td>$100.00</td>
-
-                    </tr>
-                    <!-- Add more rows for additional transactions as needed -->
-                </table>
+                <div class="scrollable-table">
+                    <table class="transactionTable" id="transactions">
+                        <tr>
+                            <th>Transaction Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                        <!-- Add more rows for additional transactions as needed -->
+                    </table>
+                </div>
             </div>
         </div>
+
     </div>
+
+    <script>
+
+        var user;
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var cookieData = document.cookie
+                .split('; ')
+                .find((row) => row.startsWith("user="))
+                .split('=')[1];
+
+            if (cookieData) {
+                var jsonData = JSON.parse(cookieData);
+
+
+                fetchUserDetails(jsonData.email);
+
+
+
+                console.log(jsonData);
+            }
+        });
+
+        function fetchUserDetails(email) {
+
+            fetch("http://localhost:5237/bankApi/getUser?email=" + email)
+                .then(async response => {
+                    if (response.ok) {
+                        user = await response.json();
+                        console.log(user);
+                        document.getElementById("name").textContent = user.name;
+                        document.getElementById("email").textContent = user.email;
+                        document.getElementById("phone").textContent = user.phone;
+                        document.getElementById("accountNumber").textContent = user.accounts[0].accountNo;
+                        document.getElementById("accountBalance").textContent = 'LKR ' + user.accounts[0].balance;
+                        fetchAccounts(user.accounts[0].accountId);
+
+
+                    }
+                    else {
+                        alert("Invalid Account Number");
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function fetchAccounts(accountId) {
+            fetch("http://localhost:5237/bankApi/getTransactions?id=" + accountId)
+                .then(async response => {
+                    if (response.ok) {
+                        const jsondata = await response.json();
+                        console.log(jsondata);
+                        var transactionTable = jsondata;
+
+
+                        document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
+                            return `<tr>
+                                    <td>${transaction.dateTime}</td>
+                                    <td>${transaction.description}</td>
+                                    <td>LKR ${transaction.amount}</td>
+                                    </tr>`;
+                        }).join('');
+                    }
+                    else {
+                        alert("Invalid Account Number");
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function sendTransaction() {
+
+            const accountNumber = document.getElementById("recieverAccountNumber").value;
+            const amount = parseFloat(document.getElementById("recieverAmount").value);
+            const description = document.getElementById("recieverDescription").value;
+
+            console.log(accountNumber, amount, description);
+
+            postTransaction(accountNumber, amount, description);
+        }
+
+        function postTransaction(accountNumber, amount, description) {
+            const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
+            const now = new Date();
+            const date = now.toISOString();
+
+
+            fetch("http://localhost:5237/bankApi/transfer?to=" + accountNumber, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "amount": amount,
+                    "accountId": parseInt(user.accounts[0].accountId),
+                    "description": description,
+                    "dateTime": date
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Request failed with status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+                    console.log('Success! Transaction posted:', data);
+                    errorMessageElement.textContent = 'Transaction Successful!';
+                    setTimeout(function () {
+                        errorMessageElement.textContent = '';
+                    }, 2000);
+                })
+                .catch(error => {
+
+                    errorMessageElement.textContent = 'Error: ' + error.message;
+                    setTimeout(function () {
+                        errorMessageElement.textContent = '';
+                    }, 2000);
+                });
+        }
+
+        function toggleCard() {
+
+            document.getElementById("popup").classList.toggle("popupShow")
+
+        }
+
+
+    </script>
 
 </body>
 </html>
