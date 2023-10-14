@@ -29,7 +29,9 @@ namespace Bank_Data_Web_Service.Controllers
           {
               return NotFound();
           }
-            return await _context.Account.ToListAsync();
+            return await _context.Account
+                .Include(a => a.Transactions)
+                .ToListAsync();
         }
 
         // GET: api/Accounts/5

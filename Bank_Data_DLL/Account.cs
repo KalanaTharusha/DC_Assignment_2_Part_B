@@ -15,7 +15,6 @@ namespace Bank_Data_DLL
         public int UserId { get; set; }
         [JsonIgnore]
         public User User { get; set; }
-        [JsonIgnore]
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

@@ -100,17 +100,19 @@ namespace Bank_Web_Application.Controllers
             return new ObjectResult(withdrawal) { StatusCode = 201 };
         }
 
-        //[HttpPost]
-        //public IEnumerable<Transaction> GetTransactions([FromQuery] int no)
-        //{
-        //    client = new RestClient(DataService);
-        //    RestRequest request = new RestRequest("api/transactions/accNo/{no}", Method.Post);
-        //    request.AddUrlSegment("no", no);
+        [HttpGet]
+        public IEnumerable<Transaction> GetTransactions([FromQuery] int id)
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/transactions/accId/{i}", Method.Get);
+            request.AddUrlSegment("i", id);
 
-        //    RestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
 
-        //    return new ObjectResult(withdrawal) { StatusCode = 201 };
-        //}
+            IEnumerable<Transaction> transactions = JsonConvert.DeserializeObject<IEnumerable<Transaction>>(response.Content);
+
+            return transactions;
+        }
 
     }
 }
