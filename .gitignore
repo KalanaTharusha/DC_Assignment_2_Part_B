@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Bank_Data_Web_Service/Bank.db
+/Bank_Data_Web_Service/Bank.db-shm
+/Bank_Data_Web_Service/Bank.db-wal
