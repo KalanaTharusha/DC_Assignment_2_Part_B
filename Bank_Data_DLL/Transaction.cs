@@ -13,6 +13,7 @@ namespace Bank_Data_DLL
         public TransactionType Type { get; set; }
         public double Amount { get; set; }
         public DateTime DateTime { get; set; }
+        public string Description { get; set; }
         public int AccountId { get; set; }
         [JsonIgnore]
         public Account Account { get; set; }

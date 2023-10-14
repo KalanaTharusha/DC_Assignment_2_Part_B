@@ -16,17 +16,19 @@ namespace Bank_Data_Web_Service.Data
 
             User user = new User();
             user.UserId = 1;
-            user.Name = "user1";
-            user.Email = "user1@email.com";
-            user.Address = "user1 address";
+            user.Name = "admin";
+            user.Role = Bank_Data_DLL.User.UserRole.admin;
+            user.Email = "admin@email.com";
+            user.Address = "admin address";
             user.Phone = 0710000001;
-            user.Picture = "user1 picture url";
-            user.Password = "user1pass";
+            user.Picture = "admin picture url";
+            user.Password = "adminpass";
             users.Add(user);
 
             user = new User();
             user.UserId = 2;
             user.Name = "user2";
+            user.Role = Bank_Data_DLL.User.UserRole.client;
             user.Email = "user2@email.com";
             user.Address = "user2 address";
             user.Phone = 0710000002;
@@ -37,6 +39,7 @@ namespace Bank_Data_Web_Service.Data
             user = new User();
             user.UserId = 3;
             user.Name = "user3";
+            user.Role = Bank_Data_DLL.User.UserRole.client;
             user.Email = "user3@email.com";
             user.Address = "user3 address";
             user.Phone = 0710000003;

@@ -79,7 +79,6 @@ namespace Bank_Web_Application.Controllers
 
             RestResponse response = client.Execute(request);
 
-            IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(response.Content);
             return new ObjectResult(deposit) { StatusCode = 201};
         }
 
@@ -98,9 +97,20 @@ namespace Bank_Web_Application.Controllers
 
             RestResponse response = client.Execute(request);
 
-            IEnumerable<Account> accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(response.Content);
             return new ObjectResult(withdrawal) { StatusCode = 201 };
         }
+
+        //[HttpPost]
+        //public IEnumerable<Transaction> GetTransactions([FromQuery] int no)
+        //{
+        //    client = new RestClient(DataService);
+        //    RestRequest request = new RestRequest("api/transactions/accNo/{no}", Method.Post);
+        //    request.AddUrlSegment("no", no);
+
+        //    RestResponse response = client.Execute(request);
+
+        //    return new ObjectResult(withdrawal) { StatusCode = 201 };
+        //}
 
     }
 }

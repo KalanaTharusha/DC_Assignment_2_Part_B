@@ -63,6 +63,9 @@ namespace Bank_Data_Web_Service.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
@@ -97,6 +100,9 @@ namespace Bank_Data_Web_Service.Migrations
                     b.Property<string>("Picture")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("UserId");
 
                     b.ToTable("User");
@@ -105,12 +111,13 @@ namespace Bank_Data_Web_Service.Migrations
                         new
                         {
                             UserId = 1,
-                            Address = "user1 address",
-                            Email = "user1@email.com",
-                            Name = "user1",
-                            Password = "user1pass",
+                            Address = "admin address",
+                            Email = "admin@email.com",
+                            Name = "admin",
+                            Password = "adminpass",
                             Phone = 710000001,
-                            Picture = "user1 picture url"
+                            Picture = "admin picture url",
+                            Role = 1
                         },
                         new
                         {
@@ -120,7 +127,8 @@ namespace Bank_Data_Web_Service.Migrations
                             Name = "user2",
                             Password = "user2pass",
                             Phone = 710000002,
-                            Picture = "user2 picture url"
+                            Picture = "user2 picture url",
+                            Role = 0
                         },
                         new
                         {
@@ -130,7 +138,8 @@ namespace Bank_Data_Web_Service.Migrations
                             Name = "user3",
                             Password = "user3pass",
                             Phone = 710000003,
-                            Picture = "user3 picture url"
+                            Picture = "user3 picture url",
+                            Role = 0
                         });
                 });
 
