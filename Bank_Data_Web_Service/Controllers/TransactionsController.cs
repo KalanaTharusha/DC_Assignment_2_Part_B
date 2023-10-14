@@ -32,7 +32,7 @@ namespace Bank_Data_Web_Service.Controllers
             return await _context.Transaction.ToListAsync();
         }
 
-        // GET: api/Transactions/
+        // GET: api/Transactions/ get by acc Id
         [HttpGet("accId/{id}")]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int id)
         {
