@@ -38,11 +38,13 @@ namespace Bank_Data_Web_Service.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-          if (_context.Account == null)
-          {
-              return NotFound();
-          }
-            var account = await _context.Account.FindAsync(id);
+            if (_context.Account == null)
+            {
+                return NotFound();
+            }
+            var account = await _context.Account
+                .Include(a => a.Transactions)
+                .FirstOrDefaultAsync(a => a.AccountId == id);
 
             if (account == null)
             {
@@ -60,7 +62,9 @@ namespace Bank_Data_Web_Service.Controllers
             {
                 return NotFound();
             }
-            var account = await _context.Account.FirstOrDefaultAsync(a => a.AccountNo == accNo);
+            var account = await _context.Account
+                .Include(a => a.Transactions)
+                .FirstOrDefaultAsync(a => a.AccountNo == accNo);
 
             if (account == null)
             {
