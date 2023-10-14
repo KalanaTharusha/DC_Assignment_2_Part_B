@@ -35,6 +35,12 @@
                                 <a class="btn btn-custom" asp-area="" asp-controller="Home" asp-action="Index">Sign Out</a>
                             </li>
                         }
+                        @if (ViewContext.RouteData.Values["action"].ToString().Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-custom" asp-area="" asp-controller="Home" asp-action="Index">Sign Out</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

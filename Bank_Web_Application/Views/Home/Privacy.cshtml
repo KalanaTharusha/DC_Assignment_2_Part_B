@@ -31,7 +31,7 @@
 
             .welcomeMessage.welcomeMessage-right {
                 font-size: 2rem;
-                font-weight: 700;
+                font-weight: bold;
                 text-align: right;
                 margin-top: auto;
                 margin-right: 20px;
@@ -46,32 +46,34 @@
                 -webkit-text-fill-color: transparent;
             }
 
+            
+
 
         .profileImage {
-            width: 160px;
-            height: 160px;
             border-radius: 50%;
             overflow: hidden;
-            margin-left: 20px;
+            margin-left: 10px;
         }
 
             .profileImage img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+                object-position: center top; /* Center the image vertically */
             }
 
+
+
+
         .userDetails {
-            width: 50%;
             text-align: left;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            justify-content: left;
         }
 
         .edit-button {
-            font-weight: 500;
+            font-weight: 700;
             font-size: 0.8em;
             cursor: pointer;
             color: #4F46E5;
@@ -80,12 +82,13 @@
         }
 
             .edit-button:hover {
-                text-decoration: none;
+                color: #655de8;
             }
 
         .name {
             font-size: 1.5em;
             font-weight: 700;
+            margin-bottom: 2px;
             color: black;
         }
 
@@ -93,7 +96,7 @@
             font-size: 0.84em;
             color: black;
             letter-spacing: 0.2px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .profile-card {
@@ -195,6 +198,20 @@
             display: flex;
             flex-direction: column;
             width: 25%;
+        }
+
+        .formField{
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .formFieldLabel {
+            border: none;
+            margin-bottom: 1px;
+            margin-top: 5px;
         }
 
         .transactionCard {
@@ -361,8 +378,11 @@
 
         <div class="profile-card card">
             <div class="profileImage">
-                <img src="https://picsum.photos/200/200" alt="Profile Image">
+              
+                    <img src="https://picsum.photos/200/200" alt="Profile Image">
+               
             </div>
+
             <div class="userDetails">
                 <p class="name" id="name">Pepper Potts</p>
                 <p class="email" id="email">pepper@pots.com</p>
@@ -398,11 +418,11 @@
         <div class="transferCard card">
             <div class="transferMoney">
                 <p class="transferTitle">Transfer Money</p>
-                <p class="formField">Account Number</p>
+                <p class="formFieldLabel">Account Number</p>
                 <input type="text" id="recieverAccountNumber" class="formField">
-                <p class="formField">Amount</p>
+                <p class="formFieldLabel">Amount</p>
                 <input type="text" id="recieverAmount" class="formField">
-                <p class="formField">Description</p>
+                <p class="formFieldLabel">Description</p>
                 <textarea id="recieverDescription" class="formField"></textarea>
                 <button class="sendButton" onclick="sendTransaction()">Send</button>
                 <p id="errorMessage" class="error-message"></p>
@@ -517,9 +537,6 @@
             const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
             const now = new Date();
             const date = now.toISOString();
-
-
-
 
             fetch("http://localhost:5237/bankApi/transfer?to=" + accountNumber, {
                 method: "POST",

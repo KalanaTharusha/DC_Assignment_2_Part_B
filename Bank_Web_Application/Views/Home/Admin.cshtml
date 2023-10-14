@@ -10,7 +10,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Add this line to your HTML head section -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
 
     <title>Admin Dashboard</title>
     <style>
@@ -83,9 +82,6 @@
             margin-top: 20px;
         }
 
-            .edit-button:hover {
-                text-decoration: none;
-            }
 
         .name {
             font-size: 1.5em;
@@ -203,6 +199,8 @@
         /* User Management Section Styles */
 
         .userManagement {
+            display: flex;
+            justify-content: space-between;
             background-color: #f5f5f5;
             padding: 20px;
             border-radius: 12px;
@@ -241,6 +239,20 @@
             top: 0;
             left: 0;
         }
+
+        .userManagement .user-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align content to the right side */
+        }
+
+            .userManagement .user-list .action-buttons {
+                margin-top: 5px; /* Add space between table and buttons */
+            }
+
+                .userManagement .user-list .action-buttons button {
+                    margin-bottom: 5px; /* Add spacing between stacked buttons */
+                }
 
         .search-users {
             display: flex;
@@ -321,6 +333,7 @@
             background-color: #f5f5f5;
             padding: 20px;
             border-radius: 12px;
+            margin-bottom: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -425,15 +438,132 @@
 
         /* Add styles for security and access control section */
 
-        .securityAndAccess {
-            /* Add styles for the security and access control section */
+        /* Activity Logs Section Styles */
+
+        .activityLogs {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Add any additional styles needed for new elements or sections */
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .log-console {
+            background-color: black;
+            color: #00FF00;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 600px;
+            width: 90%;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+
+            .log-console code {
+                font-family: monospace;
+            }
+
+        .popupContainer {
+            position: fixed;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .popupShow {
+            display: flex;
+        }
+
+        .popupCard {
+            max-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popupCloseBtn {
+            color: darkgrey;
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            border: none;
+            background-color: transparent;
+        }
+
+        .editField {
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .editFieldLabel {
+            border: none;
+            margin: 5px;
+        }
+
+        .sendButton {
+            width: 100%; /* Make the button as long as the input fields */
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #4F46E5;
+            color: white;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+
+        .editTitle {
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
 
     </style>
 </head>
 <body>
+
+    <div class="popupContainer" id="popup">
+        <div class="popupCard card">
+            <button class="popupCloseBtn" onclick="toggleCard()">X</button>
+            <div class="edit">
+                <p class="editTitle">Edit Details</p>
+                <p class="editFieldLabel">Password</p>
+                <input type="text" id="editName" class="editField">
+                <p class="editFieldLabel">Confirm Password</p>
+                <input type="text" id="editPhoneNo" class="editField">
+                <button class="sendButton" onclick="sendTransaction()">Edit</button>
+                <p id="errorMessage" class="error-message"></p>
+            </div>
+        </div>
+    </div>
 
     <div class="card-container">
         <!-- Admin Profile Information Section -->
@@ -445,7 +575,7 @@
                 <p class="name" id="name">Pepper Potts</p>
                 <p class="email" id="email">pepper@pots.com</p>
                 <p class="phoneNo" id="phone">0777171717</p>
-                <p class="edit-button" onclick="showEditCard()">Edit Details</p>
+                <p class="edit-button" onclick="toggleCard()">Edit Details</p>
             </div>
 
             <div class="welcomeMessage welcomeMessage-right">
@@ -458,35 +588,34 @@
         <div class="createUser card">
             <h2 class="card-title">Create User</h2>
 
-            <form class="createUserForm" id="createUserForm" onsubmit="return validateForm('createUserForm');">
+            <form class="createUserForm" id="createUserForm">
                 <div class="row">
                     <div class="input-container">
-                        <input placeholder="Name" type="text">
+                        <input placeholder="Name" type="text" id="nameInput">
                     </div>
                     <div class="input-container">
-                        <input placeholder="Email" type="email">
+                        <input placeholder="Email" type="email" id="emailInput">
                     </div>
                 </div>
                 <div class="input-container">
-                    <input placeholder="Address" type="text">
+                    <input placeholder="Address" type="text" id="addressInput">
                 </div>
                 <div class="row">
                     <div class="input-container">
-                        <input placeholder="Phone Number" type="tel">
+                        <input placeholder="Phone Number" type="tel" id="phoneInput">
                     </div>
                     <div class="input-container">
-                        <input placeholder="Profile Picture URL" type="text">
+                        <input placeholder="Profile Picture URL" type="text" id="pictureInput">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-container">
-                        <input placeholder="Password" type="password">
+                        <input placeholder="Password" type="password" id="passwordInput">
                     </div>
                 </div>
                 <div class="error-message"></div>
-                <button class="submit" type="submit">Create Account</button>
+                <button class="submit" type="button" onclick="signUp()">Create Account</button>
             </form>
-
 
         </div>
 
@@ -504,10 +633,9 @@
                 </div>
             </div>
 
-
             <!-- User Listing -->
-            <div class="user-list">
-                <!-- Display a table or list of user accounts here -->
+            <div class="user-list" style="float: right;">
+
                 <table>
                     <thead>
                         <tr>
@@ -515,7 +643,6 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -524,18 +651,21 @@
                             <td>John Doe</td>
                             <td>johndoe@example.com</td>
                             <td>Active</td>
-                            <td>
-                                <button onclick="editUser">Edit</button>
-                                <button onclick="resetPassword"> Reset</button>
-                                <button onclick="deactivateUser">Deactivate</button>
-                            </td>
-
                         </tr>
                         <!-- Add more user rows as needed -->
                     </tbody>
                 </table>
+
+                <!-- Buttons on the right side, stacked on top of each other -->
+                <div class="action-buttons">
+                    <button onclick="editUser">Edit</button>
+                    <button onclick="resetPassword">Reset</button>
+                    <button onclick="deactivateUser">Deactivate</button>
+                </div>
             </div>
         </div>
+
+
 
         <!-- Transaction Management Section -->
         <div class="transactionManagement card">
@@ -596,9 +726,127 @@
             </div>
         </div>
 
-        <!-- Add JavaScript functions to handle the functionality you described -->
+        <!-- Activity Logs Section -->
+        <div class="activityLogs card">
+            <h2 class="section-title">Activity Logs</h2>
+
+            <pre class="log-console">
+            <code id="logs">
+[Log ID 1] AdminUser123: Modified user profile - 2023-10-14 10:30 AM
+[Log ID 2] AdminUser456: Created new user account - 2023-10-14 11:15 AM
+[Log ID 3] AdminUser789: Updated system settings - 2023-10-14 12:00 PM</code>
+    </pre>
+        </div>
+
         <script>
 
+            var user;
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                var cookieData = document.cookie
+                    .split('; ')
+                    .find((row) => row.startsWith("user="))
+                    .split('=')[1];
+
+                if (cookieData) {
+                    var jsonData = JSON.parse(cookieData);
+
+
+                    fetchUserDetails(jsonData.email);
+
+
+
+                    console.log(jsonData);
+                }
+            });
+
+            function fetchUserDetails(email) {
+
+                fetch("http://localhost:5237/bankApi/getUser?email=" + email)
+                    .then(async response => {
+                        if (response.ok) {
+                            user = await response.json();
+                            console.log(user);
+                            document.getElementById("name").textContent = user.name;
+                            document.getElementById("email").textContent = user.email;
+                            document.getElementById("phone").textContent = user.phone;
+                        }
+                        else {
+                            alert("Invalid Account Number");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+
+            function signUp() {
+                
+
+                var name = document.getElementById("nameInput").value;
+                var email = document.getElementById("emailInput").value;
+                var address = document.getElementById("addressInput").value;
+                var phone = parseInt (document.getElementById("phoneInput").value);
+                var picture = document.getElementById("pictureInput").value;
+                var password = document.getElementById("passwordInput").value;
+
+                var data = {
+                    "name": name,
+                    "email": email,
+                    "address": address,
+                    "phone": phone,
+                    "picture": picture,
+                    "password": password
+                };
+
+                fetch("http://localhost:5237/bankApi/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(async response => {
+                        clearForm();
+                        if (response.ok) {
+                            var result = await response.json();
+                            console.log(result);
+
+                            alert("User Created Successfully");
+                            logActions("User Created Successfully");
+                        }
+                        else {
+                            alert("Invalid Account");
+                            logActions("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+
+            function clearForm() {
+                document.getElementById("nameInput").value = "";
+                document.getElementById("emailInput").value = "";
+                document.getElementById("addressInput").value = "";
+                document.getElementById("phoneInput").value = "";
+                document.getElementById("pictureInput").value = "";
+                document.getElementById("passwordInput").value = "";
+            }
+
+            function logActions(string){
+                var logs = document.getElementById("logs");
+                logs.innerHTML += `${string} <br>` ;
+
+
+            }
+
+            function toggleCard() {
+
+                document.getElementById("popup").classList.toggle("popupShow")
+
+            }
         </script>
 </body>
 </html>
