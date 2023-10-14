@@ -353,9 +353,35 @@
 
 
 
+
+
                 console.log(jsonData);
             }
         });
+
+        function fetchAccountDetails(email) {
+
+            fetch("http://localhost:5237/bankApi/getUser?email=" + email)
+                .then(async response => {
+                    if (response.ok) {
+                        const jsondata = await response.json();
+                        console.log(jsondata);
+                        document.getElementById('name').textContent = jsonData.name;
+                        document.getElementById('email').textContent = jsonData.email;
+                        document.getElementById('phone').textContent = jsonData.phone;
+                        document.getElementById("accountNumber").textContent = jsondata.userId;
+                        document.getElementById("accountBalance").textContent = jsondata.balance;
+                        
+
+                    }
+                    else {
+                        alert("Invalid Account Number");
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
 
 
 
