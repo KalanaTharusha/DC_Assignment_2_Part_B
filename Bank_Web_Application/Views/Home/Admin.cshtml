@@ -541,12 +541,10 @@
             font-weight: bold;
         }
 
-        .deactivateButton{
-            background-color: red;
-        }
-
-        .activateButton{
-            background-color: green;
+        .buttonCell{
+            display: flex;
+justify-content: center;
+align-items: center;
         }
 
     </style>
@@ -642,21 +640,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>User ID</th>
+                            <th>Acc. No</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
-                        <tr>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>johndoe@example.com</td>
-                            <td>Active</td>
-                            <td><button onclick="deactivateUser">Deactivate</button></td>
-                        </tr>
                         
                     </tbody>
                 </table>
@@ -857,12 +847,12 @@
                             accounts.forEach(account => {
                                 tableBody.innerHTML += `
                                     <tr>
-                                        <td>${user.userId}</td>
+                                        <td>${account.accountNo}</td>
                                         <td>${user.name}</td>
                                         <td>${user.email}</td>
-                                        <td>${account.accountNo}</td>
 
-                                                    <td>${account.status === 0 ? `<button style="background-color: red;" onclick="alert('works')">Deactivate</button>` : `<button style="background-color: green;" onclick="alert('works')">Activate</button>`}</td>
+
+                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="alert('works')">Deactivate</button>` : `<button style="background-color: green;" onclick="alert('works')">Activate</button>`}</td>
 
                                     </tr>`;
                             });
