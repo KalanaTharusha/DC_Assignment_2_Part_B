@@ -312,6 +312,7 @@
 
         .editFieldLabel {
             border: none;
+            margin: 5px;
         }
 
         .sendButton {
@@ -332,6 +333,7 @@
 
         .editTitle {
             font-size: 1.5em;
+            margin-top: 20px;
             font-weight: bold;
         }
 
@@ -385,6 +387,7 @@
                 <div class="welcomeMessage welcomeMessage-right">
                     <!-- Add the welcomeMessage-right class -->
                     <p class="accountText">Trust Bitcoin! It's better than your bank :)</p>
+
                 </div>
             </div>
         </div>
@@ -524,7 +527,7 @@
                 body: JSON.stringify({
                     "amount": amount,
                     "accountId": parseInt(user.accounts[0].accountId),
-                    "description": description,
+                    "description": "HARDCODEEEE",
                     "dateTime": date
                 })
             })
