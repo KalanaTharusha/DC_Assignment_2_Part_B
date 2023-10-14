@@ -427,6 +427,8 @@
 
     <script>
 
+        var user;
+
         document.addEventListener("DOMContentLoaded", function () {
 
             var cookieData = document.cookie
@@ -451,14 +453,14 @@
             fetch("http://localhost:5237/bankApi/getUser?email=" + email)
                 .then(async response => {
                     if (response.ok) {
-                        const jsondata = await response.json();
-                        console.log(jsondata);
-                        document.getElementById("name").textContent = jsondata.name;
-                        document.getElementById("email").textContent = jsondata.email;
-                        document.getElementById("phone").textContent = jsondata.phone;
-                        document.getElementById("accountNumber").textContent = jsondata.accounts[0].accountNo;
-                        document.getElementById("accountBalance").textContent = 'LKR ' + jsondata.accounts[0].balance;
-                        fetchAccounts(jsondata.accounts[0].accountId);
+                        user = await response.json();
+                        console.log(user);
+                        document.getElementById("name").textContent = user.name;
+                        document.getElementById("email").textContent = user.email;
+                        document.getElementById("phone").textContent = user.phone;
+                        document.getElementById("accountNumber").textContent = user.accounts[0].accountNo;
+                        document.getElementById("accountBalance").textContent = 'LKR ' + user.accounts[0].balance;
+                        fetchAccounts(user.accounts[0].accountId);
 
 
                     }
@@ -482,10 +484,10 @@
 
                         document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
                             return `<tr>
-                                                                                                <td>${transaction.dateTime}</td>
-                                                                                                <td>${transaction.description}</td>
-                                                                                                <td>LKR ${transaction.amount}</td>
-                                                                                                </tr>`;
+                            <td>${transaction.dateTime}</td>
+                            <td>${transaction.description}</td>
+                            <td>LKR ${transaction.amount}</td>
+                            </tr>`;
                         }).join('');
                     }
                     else {
@@ -498,28 +500,32 @@
         }
 
         function sendTransaction() {
-            const accountId = document.getElementById("recieverAccountNumber").value;
-            const amount = document.getElementById("recieverAmount").value;
+
+            const accountNumber = document.getElementById("recieverAccountNumber").value;
+            const amount = parseFloat(document.getElementById("recieverAmount").value);
             const description = document.getElementById("recieverDescription").value;
 
-            console.log(accountId, amount, description);
+            console.log(accountNumber, amount, description);
 
-            postTransaction(accountId, amount, description);
+            postTransaction(accountNumber, amount, description);
         }
 
-        function postTransaction(accountId, amount, description) {
+        function postTransaction(accountNumber, amount, description) {
             const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
+            const now = new Date();
+            const date = now.toISOString();
 
-            fetch("http://localhost:5237/bankApi/deposit", {
+
+            fetch("http://localhost:5237/bankApi/transfer?to=" + accountNumber, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     "amount": amount,
-                    "accountId": accountId,
+                    "accountId": parseInt(user.accounts[0].accountId),
                     "description": description,
-                    "dateTime": Date.now()
+                    "dateTime": date
                 })
             })
                 .then(response => {
@@ -529,7 +535,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Handle the successful response here
+
                     console.log('Success! Transaction posted:', data);
                     errorMessageElement.textContent = 'Transaction Successful!';
                     setTimeout(function () {
@@ -537,7 +543,7 @@
                     }, 2000);
                 })
                 .catch(error => {
-                    // Display the error message above the Send Button
+
                     errorMessageElement.textContent = 'Error: ' + error.message;
                     setTimeout(function () {
                         errorMessageElement.textContent = '';
