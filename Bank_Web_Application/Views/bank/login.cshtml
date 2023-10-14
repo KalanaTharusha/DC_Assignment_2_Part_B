@@ -1,7 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Login Page";
+﻿@page
+@model Bank_Web_Application.Views.bank.loginModel
+@{
 }
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,6 +145,9 @@
 
             errorMessage.textContent = "";
 
+            // If all fields are filled, perform the login action.
+            login();
+
             return true;
         }
 
@@ -153,7 +156,7 @@
             // After successful login, you can redirect the user to the dashboard.
             // For this example, we'll simulate the login with an alert.
 
-            window.location.href = "/Home/Privacy"; // Replace "login.html" with the actual URL of your login page.
+            window.location.href = "/userDashboard"; // Replace "login.html" with the actual URL of your login page.
         }
     </script>
 
@@ -207,3 +210,4 @@
     </form>
 </body>
 </html>
+
