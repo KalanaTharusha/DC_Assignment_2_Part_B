@@ -111,6 +111,35 @@ namespace Bank_Web_Application.Controllers
             return new ObjectResult(withdrawal) { StatusCode = 201 };
         }
 
+        [HttpPost]
+        public IActionResult Transfer([FromBody] Transaction transaction, [FromQuery] int to)
+        {
+            client = new RestClient(DataService);
+
+            RestRequest a_request = new RestRequest("api/accounts/no/{no}", Method.Get);
+            a_request.AddUrlSegment("no", to);
+            RestResponse a_response = client.Execute(a_request);
+
+            try 
+            {
+                Account beneficiary = JsonConvert.DeserializeObject<Account>(a_response.Content);
+                Transaction deposit = new Transaction();
+                deposit.AccountId = beneficiary.AccountId;
+                deposit.Amount = transaction.Amount;
+                deposit.DateTime = DateTime.Now;
+                deposit.Type = Transaction.TransactionType.Deposit;
+
+                Withdraw(transaction);
+                Deposit(deposit);
+
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return new ObjectResult(transaction) { StatusCode = 201 };
+        }
+
         [HttpGet]
         public IEnumerable<Transaction> GetTransactions([FromQuery] int id)
         {
