@@ -862,7 +862,7 @@
                                         <td>${user.email}</td>
                                         <td>${account.accountNo}</td>
 
-                                                    <td>${account.status === 0 ? `<button class="deactivateButton" onclick= "deactivateUser(${account.userId})" > Deactivate </button>` : `<button class="activateButton" onclick="deactivateUser(${account.userId})">Activate</button>`}</td>
+                                                    <td>${account.status === 0 ? `<button style="background-color: red;" onclick="alert('works')">Deactivate</button>` : `<button style="background-color: green;" onclick="alert('works')">Activate</button>`}</td>
 
                                     </tr>`;
                             });
