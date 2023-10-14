@@ -25,6 +25,7 @@ namespace Bank_Web_Application.Controllers
             account.AccountNo = (int)((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
             account.Balance = 0;
             account.UserId = user.UserId;
+            account.Status = 0;
             request.AddBody(account);
             response = client.Execute(request);
 
@@ -141,6 +142,36 @@ namespace Bank_Web_Application.Controllers
             }
 
             return new ObjectResult(transaction) { StatusCode = 201 };
+        }
+
+        [HttpGet]
+        public User Search([FromQuery] string term)
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/users", Method.Get);
+            RestResponse response = client.Execute(request);
+
+            User user = JsonConvert.DeserializeObject<IEnumerable<User>>(response.Content).FirstOrDefault(u => u.Name.Equals(term));
+
+            if(user == null) 
+            {
+                request = new RestRequest("api/accounts/no/{accNo}", Method.Get);
+                request.AddUrlSegment("accNo", Int32.Parse(term));
+                response = client.Execute(request);
+
+                int id = JsonConvert.DeserializeObject<Account>(response.Content).UserId;
+
+                request = new RestRequest("api/users/{id}", Method.Get);
+                request.AddUrlSegment("id", id);
+                response = client.Execute(request);
+
+                user = JsonConvert.DeserializeObject<User>(response.Content);
+
+
+            }
+
+
+            return user;
         }
 
         [HttpGet]

@@ -42,7 +42,9 @@ namespace Bank_Data_Web_Service.Controllers
           {
               return NotFound();
           }
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.User
+                .Include(u => u.Accounts)
+                .FirstOrDefaultAsync(u => u.UserId == id);
 
             if (user == null)
             {

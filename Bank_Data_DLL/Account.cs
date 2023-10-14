@@ -13,8 +13,15 @@ namespace Bank_Data_DLL
         public int AccountNo { get; set; }
         public double Balance { get; set; }
         public int UserId { get; set; }
+        public AccountStatus Status { get; set; }
         [JsonIgnore]
         public User User { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
+
+        public enum AccountStatus
+        {
+            Activated,
+            Deactivated
+        }
     }
 }

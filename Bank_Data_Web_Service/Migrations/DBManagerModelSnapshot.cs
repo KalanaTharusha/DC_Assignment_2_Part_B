@@ -29,6 +29,9 @@ namespace Bank_Data_Web_Service.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("REAL");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
@@ -44,6 +47,7 @@ namespace Bank_Data_Web_Service.Migrations
                             AccountId = 1,
                             AccountNo = 21,
                             Balance = 99999.0,
+                            Status = 0,
                             UserId = 2
                         });
                 });

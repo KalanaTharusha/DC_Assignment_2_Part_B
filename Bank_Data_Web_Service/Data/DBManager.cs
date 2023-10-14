@@ -50,6 +50,7 @@ namespace Bank_Data_Web_Service.Data
             Account account = new Account();
             account.AccountId = 1;
             account.AccountNo = 21;
+            account.Status = Bank_Data_DLL.Account.AccountStatus.Activated;
             account.Balance = 99999;
             account.UserId = 2;
 
