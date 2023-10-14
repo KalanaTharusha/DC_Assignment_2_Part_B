@@ -53,7 +53,7 @@ namespace Bank_Web_Application.Controllers
             return Unauthorized();
         }
 
-        [HttpGet("/user")]
+        [HttpGet]
         public User GetUser([FromQuery] string email)
         {
             client = new RestClient(DataService);
