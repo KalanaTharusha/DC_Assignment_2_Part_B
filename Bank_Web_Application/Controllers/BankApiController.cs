@@ -53,6 +53,17 @@ namespace Bank_Web_Application.Controllers
             return Unauthorized();
         }
 
+        [HttpGet("/user")]
+        public User GetUser([FromQuery] string email)
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/users/email/{e}", Method.Get);
+            request.AddUrlSegment("e", email);
+            RestResponse response = client.Execute(request);
+            User user = JsonConvert.DeserializeObject<User>(response.Content);
+            return user;
+        }
+
         [HttpGet]
         public IEnumerable<Account> GetAccounts([FromQuery] int id) 
         {
