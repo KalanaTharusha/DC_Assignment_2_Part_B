@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Admin Dashboard";
+﻿@page
+@model Bank_Web_Application.Views.Home.adminDashboardModel
+@{
 }
 
 <!DOCTYPE html>
@@ -508,54 +509,54 @@
     </div>
 
 
-        <!-- Add JavaScript functions to handle the functionality you described -->
-        <script>
-            function updateProfile() {
-                // Handle updating admin profile information
-            }
+    <!-- Add JavaScript functions to handle the functionality you described -->
+    <script>
+        function updateProfile() {
+            // Handle updating admin profile information
+        }
 
-            function manageUsers() {
-                // Handle user management actions (create, edit, deactivate, reset passwords)
-            }
+        function manageUsers() {
+            // Handle user management actions (create, edit, deactivate, reset passwords)
+        }
 
+        function searchUsers() {
+            // Handle user search functionality
+        }
+
+        function manageTransactions() {
+            // Handle transaction management (view, search, filter, sort)
+        }
+
+        function viewAuditLogs() {
+            // Handle viewing audit logs and system changes
+        }
+
+        function logout() {
+            // Handle the logout functionality
+        }
+
+        <!--JavaScript functions for user management actions-- >
+            <script>
             function searchUsers() {
-                // Handle user search functionality
+                // Implement user search functionality based on searchUserInput value
+                const searchTerm = document.getElementById("searchUserInput").value;
+                // Filter and display users that match the search term
             }
 
-            function manageTransactions() {
-                // Handle transaction management (view, search, filter, sort)
+                                        function editUser(userId) {
+                // Implement user editing functionality
+                // Fetch user details for the given userId and allow editing
             }
 
-            function viewAuditLogs() {
-                // Handle viewing audit logs and system changes
-            }
+        function deactivateUser(userId) {
+            // Implement user deactivation functionality
+            // Update the user's status to "Inactive" in the user list
+        }
 
-            function logout() {
-                // Handle the logout functionality
-            }
-
-            <!--JavaScript functions for user management actions-- >
-                <script>
-                function searchUsers() {
-                    // Implement user search functionality based on searchUserInput value
-                    const searchTerm = document.getElementById("searchUserInput").value;
-                    // Filter and display users that match the search term
-                }
-
-                                function editUser(userId) {
-                    // Implement user editing functionality
-                    // Fetch user details for the given userId and allow editing
-                }
-
-            function deactivateUser(userId) {
-                // Implement user deactivation functionality
-                // Update the user's status to "Inactive" in the user list
-            }
-
-            function resetPassword(userId) {
-                // Implement password reset functionality for the user
-                // Generate and send a new password to the user
-            }
-        </script>
+        function resetPassword(userId) {
+            // Implement password reset functionality for the user
+            // Generate and send a new password to the user
+        }
+    </script>
 </body>
 </html>

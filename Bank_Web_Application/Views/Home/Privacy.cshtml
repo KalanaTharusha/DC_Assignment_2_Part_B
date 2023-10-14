@@ -258,16 +258,7 @@
 
     </style>
 
-    <script>
 
-        function logout() {
-            // Redirect the user to the login page
-            window.location.href = "/Account/Login"; // Replace "login.html" with the actual URL of your login page.
-        }
-
-
-
-    </script>
 </head>
 <body>
     <div class="card-container">
@@ -279,9 +270,9 @@
                 <div class="userDetails">
                     <p class="edit-button" onclick="showEditCard()">Edit Details</p>
 
-                    <p class="name">Pepper Potts</p>
-                    <p class="email">pepper@pots.com</p>
-                    <p class="phoneNo">0777171717</p>
+                    <p class="name" id="name">Pepper Potts</p>
+                    <p class="email" id="email">pepper@pots.com</p>
+                    <p class="phoneNo" id="phone">0777171717</p>
                 </div>
             </div>
         </div>
@@ -291,11 +282,11 @@
                 <div class="account-details">
                     <div class="account-detail">
                         <p class="accountTitle">Account Number</p>
-                        <p class="accountText">123456789</p>
+                        <p class="accountText" id="accountNumber">123456789</p>
                     </div>
                     <div class="account-detail">
                         <p class="accountTitle">Current Balance</p>
-                        <p class="accountText">$5,000.00</p>
+                        <p class="accountText" id="accountBalance">$5,000.00</p>
                     </div>
                 </div>
                 <div class="logoutButton">
@@ -340,6 +331,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function logout() {
+
+            window.location.href = "/Account/Login"; // Replace with the actual URL of your login page.
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var cookieData = document.cookie
+                .split('; ')
+                .find((row) => row.startsWith("user="))
+                .split('=')[1];
+
+            if (cookieData) {
+                var jsonData = JSON.parse(cookieData);
+                document.getElementById('name').textContent = jsonData.name;
+                document.getElementById('email').textContent = jsonData.email;
+                document.getElementById('phone').textContent = jsonData.phone;
+
+
+
+                console.log(jsonData);
+            }
+        });
+
+
+
+    </script>
 
 </body>
 </html>

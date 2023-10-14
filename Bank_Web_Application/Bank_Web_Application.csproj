@@ -14,10 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Home\adminDashboard.cshtml.cs" />
     <Compile Remove="Views\login.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\Admin.cshtml" />
+    <Content Remove="Views\Home\adminDashboard.cshtml" />
     <Content Remove="Views\login.cshtml" />
   </ItemGroup>
 
