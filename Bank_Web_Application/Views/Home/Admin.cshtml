@@ -1,19 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = "Admin Page";
 }
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Meta tags and title remain the same -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add this line to your HTML head section -->
+
     <title>Admin Dashboard</title>
     <style>
-        /* CSS styles remain mostly the same */
+
         .card {
             height: auto;
-            background: white; /* Change the background to white */
-            color: black; /* Change text color to black */
+            background: white;
+            color: black;
             border-radius: 12px;
             box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.123);
             display: flex;
@@ -24,15 +28,18 @@
         }
 
         .profileImage {
-            background: linear-gradient(to right, rgb(54, 54, 54), rgb(32, 32, 32));
-            margin-top: 20px;
-            margin-left: 20px;
-            margin-bottom: 20px;
-            width: 170px;
-            height: 170px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
-            box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.329);
+            overflow: hidden;
+            margin: 20px;
         }
+
+            .profileImage img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
         .userDetails {
             width: 50%;
@@ -43,52 +50,78 @@
             justify-content: left;
         }
 
-        .edit-button {
-            font-weight: bold; /* Make the text bold */
-            cursor: pointer; /* Change the cursor to a pointer to indicate it's clickable */
-            color: #4F46E5; /* Change the color to blue (you can choose a different color) */
+        .welcomeMessage {
             text-align: right;
+            margin-top: 10px;
+            margin-right: 20px;
         }
 
-            .edit-button:hover {
-                text-decoration: none; /* Remove the underline on hover */
+            .welcomeMessage.welcomeMessage-right {
+                font-size: 2rem;
+                font-weight: 700;
+                text-align: right;
+                margin-top: auto;
+                margin-right: 20px;
+                position: absolute;
+                top: 0;
+                right: 10px;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                background: linear-gradient(45deg, #655de8, #4F46E5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
+
+        .edit-button {
+            font-weight: 500;
+            font-size: 0.8em;
+            cursor: pointer;
+            color: #4F46E5;
+            text-align: left;
+            margin-top: 20px;
+        }
+
 
         .name {
             font-size: 1.5em;
             font-weight: 700;
-            color: black; /* Change text color to black */
+            color: black;
             letter-spacing: 0.5px;
+            margin-bottom: 2px;
         }
 
-        .email {
+        .email, .phoneNo {
             font-size: 0.84em;
             color: black;
             letter-spacing: 0.2px;
-            margin-bottom: 5px;
-        }
-
-        .phoneNo {
-            font-size: 0.84em;
-            color: black;
-            letter-spacing: 0.2px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .profile-card {
+            display: flex;
+            flex-direction: row;
             width: 100%;
             margin-bottom: 10px;
-            flex-direction: row;
         }
 
         .createUser {
-            margin-bottom: 10px;
-            background-color: #f5f5f5; /* Background color for the user management section */
+            background-color: #f5f5f5;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the content horizontally */
+            margin-bottom: 10px;
         }
 
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
 
         .form {
             position: relative;
@@ -127,7 +160,7 @@
                 padding-right: 3rem;
                 font-size: 0.875rem;
                 line-height: 1.25rem;
-                width: 100%; /* Full width */
+                width: 100%;
                 border-radius: 0.5rem;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             }
@@ -137,7 +170,7 @@
                 position: absolute;
                 top: 0;
                 bottom: 0;
-                right: 1rem; /* Adjusted right spacing */
+                right: 1rem;
                 padding-left: 1rem;
                 place-content: center;
             }
@@ -158,15 +191,17 @@
             font-size: 0.875rem;
             line-height: 1.25rem;
             font-weight: 500;
-            width: 100%; /* Full width */
+            width: 100%;
             border-radius: 0.5rem;
             text-transform: uppercase;
         }
 
-
         /* User Management Section Styles */
+
         .userManagement {
-            background-color: #f5f5f5; /* Background color for the user management section */
+            display: flex;
+            justify-content: space-around;
+            background-color: #f5f5f5;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -177,33 +212,80 @@
             font-size: 1.5rem;
             color: #333;
             margin-bottom: 15px;
+            margin-right: 20px;
         }
+
+        .userManagement button {
+            padding: 10px 20px; /* Updated button padding */
+            background-color: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+            .userManagement button i {
+                font-size: 16px;
+                margin: 10px;
+                padding: 10px;
+            }
 
         .create-user-button {
             font-weight: bold;
             cursor: pointer;
             color: #4F46E5;
             position: absolute;
-            top: 0; /* Align to the top */
-            left: 0; /* Align to the left */
+            top: 0;
+            left: 0;
         }
 
+        .userManagement .user-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align content to the right side */
+        }
+
+            .userManagement .user-list .action-buttons {
+                margin-top: 5px; /* Add space between table and buttons */
+            }
+
+                .userManagement .user-list .action-buttons button {
+                    margin-bottom: 5px; /* Add spacing between stacked buttons */
+                }
 
         .search-users {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            margin-right: 20px;
         }
 
-        #searchUserInput {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 60%;
-            margin-right: 10px;
+        .search-input {
+            display: flex;
         }
 
-            #searchUserInput::placeholder {
-                color: #999;
+            .search-input input {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                outline: none;
             }
+
+        .search-button button {
+            padding: 10px;
+            background-color: #4F46E5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%; /* Make the button the same width as the input field */
+        }
+
+
+        /* Button Styles (Reused from User Management Section) */
 
         button {
             padding: 10px 20px;
@@ -220,6 +302,7 @@
             }
 
         /* User Listing Table Styles */
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -247,9 +330,12 @@
 
         /* Transaction Management Section Styles */
         .transactionManagement {
-            background-color: #f5f5f5; /* Background color for the transaction management section */
+            display: flex;
+            justify-content: space-around;
+            background-color: #f5f5f5;
             padding: 20px;
             border-radius: 12px;
+            margin-bottom: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -259,58 +345,81 @@
                 margin-bottom: 15px;
             }
 
-        .create-transaction-button {
-            font-weight: bold;
-            cursor: pointer;
-            color: #4F46E5;
-            position: absolute;
-            top: 0; /* Align to the top */
-            left: 0; /* Align to the left */
-        }
-
-        /* Search Transactions Styles */
         .search-transactions {
-            margin-bottom: 20px;
-            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
         }
 
-        #searchTransactionInput {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
+        .search-input {
+            display: flex;
         }
 
-            #searchTransactionInput::placeholder {
-                color: #999;
+            .search-input input {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                outline: none;
             }
 
-        /* Filter and Sort Options Styles */
-        /* Filter and Sort Options Styles */
-        .filter-sort-options {
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column; /* Stack options vertically */
-            align-items: flex-start; /* Align options to the left */
+        .search-button button {
+            padding: 10px;
+            background-color: #4F46E5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%; /* Make the button the same width as the input field */
         }
 
-            .filter-sort-options label,
+        .transaction-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transaction-list th, .transaction-list td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        /* Add any additional styling as needed */
+
+        .filter-sort-options {
+            margin-left: 10px; /* Updated margin for better spacing */
+            margin: 10px 0; /* Updated margin for better spacing */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+            .filter-sort-options label, .filter-sort-options select {
+                margin-right: 10px; /* Updated margin for better spacing */
+                margin-left: 10px; /* Updated margin for better spacing */
+                margin-bottom: 4px; /* Slightly reduced margin for better spacing */
+                font-size: 16px; /* Adjust font size for better readability */
+            }
+
+            /* Optional: Add a border to the select elements to make them stand out more */
             .filter-sort-options select {
-                margin-bottom: 10px; /* Add spacing between options */
+                margin-left: 10px; /* Updated margin for better spacing */
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 8px;
             }
 
 
         /* Transaction Listing Table Styles */
+
         .transaction-list table {
             width: 100%;
             border-collapse: collapse;
             background-color: white;
         }
 
-            .transaction-list table th,
-            .transaction-list table td {
+            .transaction-list table th, .transaction-list table td {
                 border: 1px solid #ccc;
                 padding: 10px;
                 text-align: left;
@@ -329,75 +438,185 @@
             background-color: #fff;
         }
 
-        /* Button Styles (You can reuse the button styles from the User Management section) */
-        .transactionManagement button {
-            padding: 10px 20px;
+        /* Add styles for security and access control section */
+
+        /* Activity Logs Section Styles */
+
+        .activityLogs {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .log-console {
+            background-color: black;
+            color: #00FF00;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 600px;
+            width: 90%;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+
+            .log-console code {
+                font-family: monospace;
+            }
+
+        .popupContainer {
+            position: fixed;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .popupShow {
+            display: flex;
+        }
+
+        .popupCard {
+            max-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popupCloseBtn {
+            color: darkgrey;
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            border: none;
+            background-color: transparent;
+        }
+
+        .editField {
+            width: 100%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .editFieldLabel {
+            border: none;
+            margin: 5px;
+        }
+
+        .sendButton {
+            width: 100%; /* Make the button as long as the input fields */
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
             background-color: #4F46E5;
             color: white;
-            border: none;
-            border-radius: 5px;
-            margin: 10px 0px;
             cursor: pointer;
         }
 
-            .transactionManagement button:hover {
-                background-color: #655de8;
-            }
-
-
-        /* Add styles for security and access control section */
-        .securityAndAccess {
-            /* Add styles for the security and access control section */
+        .error-message {
+            color: red;
+            margin-top: 5px;
         }
 
-        /* Add any additional styles needed for new elements or sections */
+        .editTitle {
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
 
     </style>
 </head>
 <body>
+
+    <div class="popupContainer" id="popup">
+        <div class="popupCard card">
+            <button class="popupCloseBtn" onclick="toggleCard()">X</button>
+            <div class="edit">
+                <p class="editTitle">Edit Details</p>
+                <p class="editFieldLabel">Password</p>
+                <input type="text" id="editName" class="editField">
+                <p class="editFieldLabel">Confirm Password</p>
+                <input type="text" id="editPhoneNo" class="editField">
+                <button class="sendButton" onclick="sendTransaction()">Edit</button>
+                <p id="errorMessage" class="error-message"></p>
+            </div>
+        </div>
+    </div>
+
     <div class="card-container">
         <!-- Admin Profile Information Section -->
         <div class="profile-card card">
             <div class="profileImage">
-                <svg viewBox="0 0 128 128"><circle r="60" fill="transparent" cy="64" cx="64"></circle><circle r="48" fill="transparent" cy="64" cx="64"></circle><path fill="#191919" d="m64 14a32 32 0 0 1 32 32v41a6 6 0 0 1 -6 6h-52a6 6 0 0 1 -6-6v-41a32 32 0 0 1 32-32z"></path><path opacity="1" fill="#191919" d="m62.73 22h2.54a23.73 23.73 0 0 1 23.73 23.73v42.82a4.45 4.45 0 0 1 -4.45 4.45h-41.1a4.45 4.45 0 0 1 -4.45-4.45v-42.82a23.73 23.73 0 0 1 23.73-23.73z"></path><circle r="7" fill="#fbc0aa" cy="65" cx="89"></circle><path fill="#4bc190" d="m64 124a59.67 59.67 0 0 0 34.69-11.06l-3.32-9.3a10 10 0 0 0 -9.37-6.64h-43.95a10 10 0 0 0 -9.42 6.64l-3.32 9.3a59.67 59.67 0 0 0 34.69 11.06z"></path><path opacity=".3" fill="#356cb6" d="m45 110 5.55 2.92-2.55 8.92a60.14 60.14 0 0 0 9 1.74v-27.08l-12.38 10.25a2 2 0 0 0 .38 3.25z"></path><path opacity=".3" fill="#356cb6" d="m71 96.5v27.09a60.14 60.14 0 0 0 9-1.74l-2.54-8.93 5.54-2.92a2 2 0 0 0 .41-3.25z"></path><path fill="#fff" d="m57 123.68a58.54 58.54 0 0 0 14 0v-25.68h-14z"></path><path stroke-width="14" stroke-linejoin="round" stroke-linecap="round" stroke="#fbc0aa" fill="none" d="m64 88.75v9.75"></path><circle r="7" fill="#fbc0aa" cy="65" cx="39"></circle><path fill="#ffd8ca" d="m64 91a25 25 0 0 1 -25-25v-16.48a25 25 0 1 1 50 0v16.48a25 25 0 0 1 -25 25z"></path><path fill="#191919" d="m91.49 51.12v-4.72c0-14.95-11.71-27.61-26.66-28a27.51 27.51 0 0 0 -28.32 27.42v5.33a2 2 0 0 0 2 2h6.81a8 8 0 0 0 6.5-3.33l4.94-6.88a18.45 18.45 0 0 1 1.37 1.63 22.84 22.84 0 0 0 17.87 8.58h13.45a2 2 0 0 0 2.04-2.03z"></path><path style="fill:none;stroke-linecap:round;stroke:#fff;stroke-miterlimit:10;stroke-width:2;opacity:.1" d="m62.76 36.94c4.24 8.74 10.71 10.21 16.09 10.21h5"></path><path style="fill:none;stroke-linecap:round;stroke:#fff;stroke-miterlimit:10;stroke-width:2;opacity:.1" d="m71 35c2.52 5.22 6.39 6.09 9.6 6.09h3"></path><circle r="3" fill="#515570" cy="62.28" cx="76"></circle><circle r="3" fill="#515570" cy="62.28" cx="52"></circle><ellipse ry="2.98" rx="4.58" opacity=".1" fill="#f85565" cy="69.67" cx="50.42"></ellipse><ellipse ry="2.98" rx="4.58" opacity=".1" fill="#f85565" cy="69.67" cx="77.58"></ellipse><g stroke-linejoin="round" stroke-linecap="round" fill="none"><path stroke-width="4" stroke="#fbc0aa" d="m64 67v4"></path><path stroke-width="2" stroke="#515570" opacity=".2" d="m55 56h-9.25"></path><path stroke-width="2" stroke="#515570" opacity=".2" d="m82 56h-9.25"></path></g><path opacity=".4" fill="#f85565" d="m64 84c5 0 7-3 7-3h-14s2 3 7 3z"></path><path fill="#f85565" d="m65.07 78.93-.55.55a.73.73 0 0 1 -1 0l-.55-.55c-1.14-1.14-2.93-.93-4.27.47l-1.7 1.6h14l-1.66-1.6c-1.34-1.4-3.13-1.61-4.27-.47z"></path></svg>
+                <img src="https://picsum.photos/200/200" alt="Profile Image">
             </div>
             <div class="userDetails">
-                <p class="edit-button" onclick="showEditCard()">Edit Details</p>
+                <p class="name" id="name">Pepper Potts</p>
+                <p class="email" id="email">pepper@pots.com</p>
+                <p class="phoneNo" id="phone">0777171717</p>
+                <p class="edit-button" onclick="toggleCard()">Edit Details</p>
+            </div>
 
-                <p class="name">ADMIN</p>
-                <p class="email">admin@email.com</p>
-                <p class="phoneNo">0777171717</p>
+            <div class="welcomeMessage welcomeMessage-right">
+                <p class="accountText">Trust Bitcoin! It's better than your bank :)</p>
             </div>
         </div>
 
+
         <!-- Create User Section -->
         <div class="createUser card">
-            <h2>Create User</h2>
+            <h2 class="card-title">Create User</h2>
 
-            <form class="createUserForm" id="createUserForm" onsubmit="return validateForm('createUserForm');">
-
-                <div class="input-container">
-                    <input placeholder="Name" type="text">
+            <form class="createUserForm" id="createUserForm">
+                <div class="row">
+                    <div class="input-container">
+                        <input placeholder="Name" type="text" id="nameInput">
+                    </div>
+                    <div class="input-container">
+                        <input placeholder="Email" type="email" id="emailInput">
+                    </div>
                 </div>
                 <div class="input-container">
-                    <input placeholder="Email" type="email">
+                    <input placeholder="Address" type="text" id="addressInput">
                 </div>
-                <div class="input-container">
-                    <input placeholder="Address" type="text">
+                <div class="row">
+                    <div class="input-container">
+                        <input placeholder="Phone Number" type="tel" id="phoneInput">
+                    </div>
+                    <div class="input-container">
+                        <input placeholder="Profile Picture URL" type="text" id="pictureInput">
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input placeholder="Phone Number" type="tel">
-                </div>
-                <div class="input-container">
-                    <input placeholder="Profile Picture URL" type="text">
-                </div>
-                <div class="input-container">
-                    <input placeholder="Password" type="password">
+                <div class="row">
+                    <div class="input-container">
+                        <input placeholder="Password" type="password" id="passwordInput">
+                    </div>
                 </div>
                 <div class="error-message"></div>
-                <button class="submit" type="submit">
-                    Create Account
-                </button>
+                <button class="submit" type="button" onclick="signUp()">Create Account</button>
             </form>
 
         </div>
@@ -408,13 +627,17 @@
 
             <!-- Search Users -->
             <div class="search-users">
-                <input type="text" id="searchUserInput" placeholder="Search users...">
-                <button onclick="searchUsers()">Search</button>
+                <div class="search-input">
+                    <input type="text" id="searchUserInput" placeholder="Search users...">
+                </div>
+                <div class="search-button">
+                    <button onclick="searchUsers()">Search</button>
+                </div>
             </div>
 
             <!-- User Listing -->
-            <div class="user-list">
-                <!-- Display a table or list of user accounts here -->
+            <div class="user-list" style="float: right;">
+
                 <table>
                     <thead>
                         <tr>
@@ -422,7 +645,6 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -431,17 +653,21 @@
                             <td>John Doe</td>
                             <td>johndoe@example.com</td>
                             <td>Active</td>
-                            <td>
-                                <button onclick="editUser(1)">Edit</button>
-                                <button onclick="deactivateUser(1)">Deactivate</button>
-                                <button onclick="resetPassword(1)">Reset Password</button>
-                            </td>
                         </tr>
                         <!-- Add more user rows as needed -->
                     </tbody>
                 </table>
+
+                <!-- Buttons on the right side, stacked on top of each other -->
+                <div class="action-buttons">
+                    <button onclick="editUser">Edit</button>
+                    <button onclick="resetPassword">Reset</button>
+                    <button onclick="deactivateUser">Deactivate</button>
+                </div>
             </div>
         </div>
+
+
 
         <!-- Transaction Management Section -->
         <div class="transactionManagement card">
@@ -449,8 +675,12 @@
 
             <!-- Search Transactions -->
             <div class="search-transactions">
-                <input type="text" id="searchTransactionInput" placeholder="Search transactions...">
-                <button onclick="searchTransactions()">Search</button>
+                <div class="search-input">
+                    <input type="text" id="searchTransactionInput" placeholder="Search transactions...">
+                </div>
+                <div class="search-button">
+                    <button onclick="searchTransactions()">Search</button>
+                </div>
             </div>
 
             <!-- Filter and Sort Options -->
@@ -498,62 +728,127 @@
             </div>
         </div>
 
+        <!-- Activity Logs Section -->
+        <div class="activityLogs card">
+            <h2 class="section-title">Activity Logs</h2>
 
-        <!-- Security and Access Control Section -->
-        <div class="securityAndAccess card">
-            <!-- Add security and access control options, logs, and audit trail here -->
+            <pre class="log-console">
+            <code id="logs">
+[Log ID 1] AdminUser123: Modified user profile - 2023-10-14 10:30 AM
+[Log ID 2] AdminUser456: Created new user account - 2023-10-14 11:15 AM
+[Log ID 3] AdminUser789: Updated system settings - 2023-10-14 12:00 PM</code>
+    </pre>
         </div>
 
-
-        <!-- Add JavaScript functions to handle the functionality you described -->
         <script>
-            function updateProfile() {
-                // Handle updating admin profile information
-            }
 
-            function manageUsers() {
-                // Handle user management actions (create, edit, deactivate, reset passwords)
-            }
+            var user;
 
-            function searchUsers() {
-                // Handle user search functionality
-            }
+            document.addEventListener("DOMContentLoaded", function () {
 
-            function manageTransactions() {
-                // Handle transaction management (view, search, filter, sort)
-            }
+                var cookieData = document.cookie
+                    .split('; ')
+                    .find((row) => row.startsWith("user="))
+                    .split('=')[1];
 
-            function viewAuditLogs() {
-                // Handle viewing audit logs and system changes
-            }
+                if (cookieData) {
+                    var jsonData = JSON.parse(cookieData);
 
-            function logout() {
-                // Handle the logout functionality
-            }
 
-            <!--JavaScript functions for user management actions-- >
-                <script>
-                function searchUsers() {
-                    // Implement user search functionality based on searchUserInput value
-                    const searchTerm = document.getElementById("searchUserInput").value;
-                    // Filter and display users that match the search term
+                    fetchUserDetails(jsonData.email);
+
+
+
+                    console.log(jsonData);
                 }
+            });
 
-                                function editUser(userId) {
-                    // Implement user editing functionality
-                    // Fetch user details for the given userId and allow editing
-                }
+            function fetchUserDetails(email) {
 
-            function deactivateUser(userId) {
-                // Implement user deactivation functionality
-                // Update the user's status to "Inactive" in the user list
+                fetch("http://localhost:5237/bankApi/getUser?email=" + email)
+                    .then(async response => {
+                        if (response.ok) {
+                            user = await response.json();
+                            console.log(user);
+                            document.getElementById("name").textContent = user.name;
+                            document.getElementById("email").textContent = user.email;
+                            document.getElementById("phone").textContent = user.phone;
+                        }
+                        else {
+                            alert("Invalid Account Number");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
 
-            function resetPassword(userId) {
-                // Implement password reset functionality for the user
-                // Generate and send a new password to the user
+            function signUp() {
+
+
+                var name = document.getElementById("nameInput").value;
+                var email = document.getElementById("emailInput").value;
+                var address = document.getElementById("addressInput").value;
+                var phone = parseInt(document.getElementById("phoneInput").value);
+                var picture = document.getElementById("pictureInput").value;
+                var password = document.getElementById("passwordInput").value;
+
+                var data = {
+                    "name": name,
+                    "email": email,
+                    "address": address,
+                    "phone": phone,
+                    "picture": picture,
+                    "password": password
+                };
+
+                fetch("http://localhost:5237/bankApi/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(async response => {
+                        clearForm();
+                        if (response.ok) {
+                            var result = await response.json();
+                            console.log(result);
+
+                            alert("User Created Successfully");
+                            logActions("User Created Successfully");
+                        }
+                        else {
+                            alert("Invalid Account");
+                            logActions("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
-        </script>
+
+            function clearForm() {
+                document.getElementById("nameInput").value = "";
+                document.getElementById("emailInput").value = "";
+                document.getElementById("addressInput").value = "";
+                document.getElementById("phoneInput").value = "";
+                document.getElementById("pictureInput").value = "";
+                document.getElementById("passwordInput").value = "";
+            }
+
+            function logActions(string) {
+                var logs = document.getElementById("logs");
+                logs.innerHTML += `${string} <br>`;
+
+
+            }
+
+            function toggleCard() {
+
+                document.getElementById("popup").classList.toggle("popupShow")
+
+            }
         </script>
 </body>
 </html>

@@ -6,14 +6,14 @@
 <html>
 <head>
     <title>Login and Signup Page</title>
-    <link rel="stylesheet" type="text/css" href="site.css">
+
     <style>
 
 
         .error-message {
             color: red;
             margin-left: 0.5rem;
-            font-weight: 600;
+            font-weight: 500;
             transition: opacity 0.5s ease-in-out;
         }
 
@@ -94,116 +94,76 @@
             text-transform: uppercase;
         }
 
-        .signup-link {
-            color: #6B7280;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            text-align: center;
-        }
-
-            .signup-link a {
-                text-decoration: underline;
-            }
-
-        .signup-form {
-            display: none;
-        }
     </style>
 
     <script>
-        function toggleForms() {
-            var loginForm = document.getElementById("login-form");
-            var signupForm = document.getElementById("signup-form");
 
-            if (loginForm.style.display === "block") {
-                loginForm.style.display = "none";
-                signupForm.style.display = "block";
-            } else {
-                loginForm.style.display = "block";
-                signupForm.style.display = "none";
-            }
-        }
+        async function login() {
+            event.preventDefault();
+            const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
 
-        function validateForm(formId) {
-            var emailInput = document.querySelector(`#${formId} input[type="email"]`);
-            var passwordInput = document.querySelector(`#${formId} input[type="password"]`);
-            var errorMessage = document.querySelector(`#${formId} .error-message`);
-
-            if (emailInput.value === "" || passwordInput.value === "") {
-                errorMessage.textContent = "Please fill in all the fields.";
-                errorMessage.style.opacity = 1;
-
+            // Check if email and password are not empty
+            if (!email || !password) {
+                errorMessageElement.textContent = 'Both Email and Password are required';
                 setTimeout(function () {
-                    errorMessage.style.opacity = 0;
-                    setTimeout(function () {
-                        errorMessage.textContent = "";
-                    }, 700);
-                }, 1500);
-
-                return false;
+                    errorMessageElement.textContent = '';
+                }, 4000);
+                return;
             }
+            else {
+                await fetch("http://localhost:5237/bankApi/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "email": email,
+                        "password": password
+                    })
+                })
+                    .then(async response => {
+                        if (response.ok) {
+                            const jsondata = await response.json();
+                            // Store the JSON data in a cookie
+                            const jsondataString = JSON.stringify(jsondata);
+                            document.cookie = "user=" + jsondataString;
+                            // Redirect to another page if needed
+                            window.location.href = "http://localhost:5237/Home/Privacy";
+                        }
+                        else {
+                            // Display an error message
+                            document.getElementById("hint").textContent = "Invalid Credentials";
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
 
-            errorMessage.textContent = "";
-
-            return true;
+                console.log(email);
+            }
         }
 
-        function login() {
-            // Perform the login action here, e.g., send a request to the server for authentication.
-            // After successful login, you can redirect the user to the dashboard.
-            // For this example, we'll simulate the login with an alert.
+        // Attach the login function to the form's submit event
+        document.getElementById("loginForm").addEventListener("submit", login);
 
-            window.location.href = "/Home/Privacy"; // Replace "login.html" with the actual URL of your login page.
-        }
     </script>
 
 </head>
 <body>
-    <form class="form" id="login-form" onsubmit="return validateForm('login-form');">
+
+    <form class="form" id="login-form">
         <p class="form-title">Sign in to your account</p>
         <div class="input-container">
-            <input placeholder="Enter email" type="email">
+            <input placeholder="Enter email" id="email" type="email" required>
         </div>
         <div class="input-container">
-            <input placeholder="Enter password" type="password">
+            <input placeholder="Enter password" id="password" type="password" required>
         </div>
-        <div class="error-message"></div>
-        <button class="submit" onclick=login()>Sign In</button>
+        <p id="errorMessage" class="error-message"></p>
+        <button class="submit" id="signin" type="submit" onclick="login()">Sign In</button>
 
-        <p class="signup-link">
-            No account?
-            <a href="javascript:void(0);" onclick="toggleForms()">Sign up</a>
-        </p>
-    </form>
-
-    <form class="form signup-form" id="signup-form" onsubmit="return validateForm('signup-form');">
-        <p class="form-title">Sign up for a new account</p>
-        <div class="input-container">
-            <input placeholder="Name" type="text">
-        </div>
-        <div class="input-container">
-            <input placeholder="Email" type="email">
-        </div>
-        <div class="input-container">
-            <input placeholder="Address" type="text">
-        </div>
-        <div class="input-container">
-            <input placeholder="Phone Number" type="tel">
-        </div>
-        <div class="input-container">
-            <input placeholder="Profile Picture URL" type="text">
-        </div>
-        <div class="input-container">
-            <input placeholder="Password" type="password">
-        </div>
-        <div class="error-message"></div>
-        <button class="submit" type="submit">
-            Sign up
-        </button>
-        <p class="signup-link">
-            Already have an account?
-            <a href="javascript:void(0);" onclick="toggleForms()">Sign in</a>
-        </p>
     </form>
 </body>
 </html>
