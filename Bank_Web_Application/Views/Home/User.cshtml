@@ -23,30 +23,6 @@
             transition-duration: 0.5s;
         }
 
-        .welcomeMessage {
-            text-align: right;
-            margin-top: 10px;
-            margin-right: 20px;
-        }
-
-            .welcomeMessage.welcomeMessage-right {
-                font-size: 2rem;
-                font-weight: 700;
-                text-align: right;
-                margin-top: auto;
-                margin-right: 20px;
-                position: absolute;
-                top: 0;
-                right: 10px;
-                bottom: 0;
-                display: flex;
-                align-items: center;
-                background: linear-gradient(45deg, #655de8, #4F46E5);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-
         .profileImage {
             width: 160px;
             height: 160px;
@@ -137,12 +113,32 @@
         .accountText {
             font-size: 0.85em;
             color: black;
-            font-weight: 400;
             letter-spacing: 0.2px;
             margin-bottom: 5px;
             margin-left: 10px;
         }
 
+        .welcomeMessage {
+            text-align: right;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+            .welcomeMessage.welcomeMessage-right {
+                font-size: 2rem;
+                text-align: right;
+                margin-top: auto;
+                margin-right: 20px;
+                position: absolute;
+                top: 0;
+                right: 10px;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                background: linear-gradient(45deg, #655de8, #4F46E5);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
 
         .card-container {
             display: flex;
@@ -265,98 +261,12 @@
             font-weight: 600;
         }
 
-        .popupContainer {
-            position: fixed;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            z-index: 10;
-            top: 0;
-            left: 0;
-        }
-
-        .popupShow {
-            display: flex;
-        }
-
-        .popupCard {
-            max-height: 50vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            border-radius: 15px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .popupCloseBtn {
-            position: absolute;
-            top: 5%;
-            right: 5%;
-            border: none;
-            background-color: transparent;
-        }
-
-        .editField {
-            width: 100%;
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-
-        .editFieldLabel {
-            border: none;
-        }
-
-        .sendButton {
-            width: 100%; /* Make the button as long as the input fields */
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #4F46E5;
-            color: white;
-            cursor: pointer;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 5px;
-        }
-
-        .editTitle {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
     </style>
 
 
 </head>
 <body>
-    <div class="popupContainer" id="popup">
-        <div class="popupCard card">
-            <button class="popupCloseBtn" onclick="toggleCard()">X</button>
-            <div class="edit">
-                <p class="editTitle">Edit Details</p>
-                <p class="editFieldLabel">Password</p>
-                <input type="text" id="editName" class="editField">
-                <p class="editFieldLabel">Confirm Password</p>
-                <input type="text" id="editPhoneNo" class="editField">
-                <button class="sendButton" onclick="sendTransaction()">Edit</button>
-                <p id="errorMessage" class="error-message"></p>
-            </div>
-        </div>
-    </div>
-
     <div class="card-container">
-
         <div class="profile-card card">
             <div class="profileImage">
                 <img src="https://picsum.photos/200/200" alt="Profile Image">
@@ -365,7 +275,7 @@
                 <p class="name" id="name">Pepper Potts</p>
                 <p class="email" id="email">pepper@pots.com</p>
                 <p class="phoneNo" id="phone">0777171717</p>
-                <p class="edit-button" onclick="toggleCard()">Edit Details</p>
+                <p class="edit-button" onclick="showEditCard()">Edit Details</p>
             </div>
         </div>
 
@@ -388,6 +298,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
 
@@ -482,10 +394,10 @@
 
                         document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
                             return `<tr>
-                                                                                        <td>${transaction.dateTime}</td>
-                                                                                        <td>${transaction.description}</td>
-                                                                                        <td>LKR ${transaction.amount}</td>
-                                                                                        </tr>`;
+                                                                                <td>${transaction.dateTime}</td>
+                                                                                <td>${transaction.description}</td>
+                                                                                <td>LKR ${transaction.amount}</td>
+                                                                                </tr>`;
                         }).join('');
                     }
                     else {
@@ -545,11 +457,6 @@
                 });
         }
 
-        function toggleCard() {
-
-            document.getElementById("popup").classList.toggle("popupShow")
-
-        }
 
 
     </script>
