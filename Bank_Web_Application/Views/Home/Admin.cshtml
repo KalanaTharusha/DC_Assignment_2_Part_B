@@ -145,6 +145,7 @@
 
         .input-container {
             position: relative;
+            width: 100%;
         }
 
             .input-container input, .form button {
@@ -155,9 +156,7 @@
 
             .input-container input {
                 background-color: #fff;
-                margin-left: 50px;
                 padding: 1rem;
-                padding-right: 3rem;
                 font-size: 0.875rem;
                 line-height: 1.25rem;
                 width: 100%;
@@ -165,26 +164,9 @@
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             }
 
-            .input-container span {
-                display: grid;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: 1rem;
-                padding-left: 1rem;
-                place-content: center;
-            }
-
-                .input-container span svg {
-                    padding-block-end: 0.125rem;
-                    color: #9CA3AF;
-                    width: 1rem;
-                    height: 1rem;
-                }
 
         .submit {
             display: block;
-            margin-left: 50px;
             padding: 0.75rem 1.25rem;
             background-color: #4F46E5;
             color: #ffffff;
@@ -481,9 +463,7 @@
             left: 0;
         }
 
-        .popupShow {
-            display: flex;
-        }
+
 
         .popupCard {
             max-height: 50vh;
@@ -541,10 +521,39 @@
             font-weight: bold;
         }
 
-        .buttonCell{
+        .buttonCell {
             display: flex;
-justify-content: center;
-align-items: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .editUser {
+            position: fixed;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .editUserForm {
+            display: flex;
+            width: 50%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popupShow {
+            display: flex;
         }
 
     </style>
@@ -565,6 +574,38 @@ align-items: center;
             </div>
         </div>
     </div>
+
+    <div class="editUser" id="editUser">
+        <form class="createUserForm editUserForm" id="updateUserForm">
+            <button type="button" class="popupCloseBtn" onclick="toggleEditUser()">X</button>
+            <h2 class="card-title">Update User</h2>
+            <div class="input-container">
+                <input placeholder="Name" type="text" id="editNameInput">
+            </div>
+            <div class="input-container">
+                <input placeholder="Email" type="email" id="editEmailInput">
+            </div>
+
+            <div class="input-container">
+                <input placeholder="Address" type="text" id="editAddressInput">
+            </div>
+
+            <div class="input-container">
+                <input placeholder="Phone Number" type="tel" id="editPhoneInput">
+            </div>
+            <div class="input-container">
+                <input placeholder="Profile Picture URL" type="text" id="editPictureInput">
+            </div>
+
+            <div class="input-container">
+                <input placeholder="Password" type="password" id="editPasswordInput">
+            </div>
+
+            <div class="error-message"></div>
+            <button class="submit" type="button" onclick="editUser()">Update Account</button>
+        </form>
+    </div>
+
 
     <div class="card-container">
         <!-- Admin Profile Information Section -->
@@ -627,7 +668,7 @@ align-items: center;
             <!-- Search Users -->
             <div class="search-users">
                 <div class="search-input">
-                    <input type="text" id="searchUserInput" placeholder="Search users..." >
+                    <input type="text" id="searchUserInput" placeholder="Search users...">
                 </div>
                 <div class="search-button">
                     <button onclick="searchUsers()">Search</button>
@@ -647,13 +688,12 @@ align-items: center;
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
-                        
                     </tbody>
                 </table>
 
                 <!-- Buttons on the right side, stacked on top of each other -->
                 <div class="action-buttons">
-                    <button onclick="editUser">Edit</button>
+                    <button onclick="toggleEditUser()">Edit</button>
                     <button onclick="resetPassword">Reset</button>
 
                 </div>
@@ -736,6 +776,7 @@ align-items: center;
         <script>
 
             var user;
+            var searchUser;
 
             document.addEventListener("DOMContentLoaded", function () {
 
@@ -777,8 +818,6 @@ align-items: center;
             }
 
             function signUp() {
-
-
                 var name = document.getElementById("nameInput").value;
                 var email = document.getElementById("emailInput").value;
                 var address = document.getElementById("addressInput").value;
@@ -836,9 +875,9 @@ align-items: center;
                 fetch("http://localhost:5237/bankApi/search?term=" + query)
                     .then(async response => {
                         if (response.ok) {
-                            user = await response.json();
-                            console.log(user);
-                            const accounts = user.accounts;
+                            searchUser = await response.json();
+                            console.log(searchUser);
+                            const accounts = searchUser.accounts;
                             console.log(accounts);
                             var tableBody = document.getElementById("userTableBody");
 
@@ -846,15 +885,15 @@ align-items: center;
 
                             accounts.forEach(account => {
                                 tableBody.innerHTML += `
-                                    <tr>
-                                        <td>${account.accountNo}</td>
-                                        <td>${user.name}</td>
-                                        <td>${user.email}</td>
-
-
+                                                <tr>
+                                                    <td>${account.accountNo}</td>
+                                                    <td>${searchUser.name}</td>
+                                                    <td>${searchUser.email}</td>
                                                     <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="alert('works')">Deactivate</button>` : `<button style="background-color: green;" onclick="alert('works')">Activate</button>`}</td>
 
-                                    </tr>`;
+
+
+                                                </tr>`;
                             });
                         } else {
                             alert("Invalid Account Number");
@@ -869,6 +908,45 @@ align-items: center;
                 // Implement the user deactivation logic here
             }
 
+            function editUser(){
+
+                searchUser.name = document.getElementById("editNameInput").value;
+                searchUser.email = document.getElementById("editEmailInput").value;
+                searchUser.address = document.getElementById("editAddressInput").value;
+                searchUser.phone = parseInt(document.getElementById("editPhoneInput")).value;
+                searchUser.picture = document.getElementById("editPictureInput").value;
+                searchUser.password = document.getElementById("editPasswordInput").value;
+
+                console.log(searchUser);
+
+                fetch("http://localhost:5237/bankApi/updateUser", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(searchUser)
+                })
+                    .then(async response => {
+                        if (response.ok) {
+                            var result = await response.json();
+                            console.log(result);
+
+                            alert("User Updated Successfully");
+                            logActions("User Updated Successfully");
+                        }
+                        else {
+                            alert("Invalid Account");
+                            logActions("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
+
+            
+            }
+
 
             function logActions(string) {
                 var logs = document.getElementById("logs");
@@ -878,8 +956,27 @@ align-items: center;
             }
 
             function toggleCard() {
-
                 document.getElementById("popup").classList.toggle("popupShow")
+            }
+
+            function toggleEditUser() {
+
+
+                var name = document.getElementById("editNameInput");
+                var email = document.getElementById("editEmailInput");
+                var address = document.getElementById("editAddressInput");
+                var phone = parseInt(document.getElementById("editPhoneInput"));
+                var picture = document.getElementById("editPictureInput");
+                var password = document.getElementById("editPasswordInput");
+
+                name.value = searchUser.name;
+                email.value = searchUser.email;
+                address.value = searchUser.address;
+                phone.value = searchUser.phone;
+                picture.value = searchUser.picture;
+                password.value = searchUser.password;
+
+                document.getElementById("editUser").classList.toggle("popupShow")
 
             }
         </script>
