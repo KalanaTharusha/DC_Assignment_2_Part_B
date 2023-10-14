@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bank_Data_Web_Service.Migrations
 {
     [DbContext(typeof(DBManager))]
-    [Migration("20231014170712_InitialCreate")]
+    [Migration("20231014230028_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,6 +53,26 @@ namespace Bank_Data_Web_Service.Migrations
                             Status = 0,
                             UserId = 2
                         });
+                });
+
+            modelBuilder.Entity("Bank_Data_DLL.Log", b =>
+                {
+                    b.Property<int>("LogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Action")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LogMessage")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LogId");
+
+                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("Bank_Data_DLL.Transaction", b =>

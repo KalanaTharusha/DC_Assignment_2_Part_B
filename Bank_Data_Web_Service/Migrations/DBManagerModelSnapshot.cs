@@ -52,6 +52,26 @@ namespace Bank_Data_Web_Service.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Bank_Data_DLL.Log", b =>
+                {
+                    b.Property<int>("LogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Action")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LogMessage")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LogId");
+
+                    b.ToTable("Log");
+                });
+
             modelBuilder.Entity("Bank_Data_DLL.Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
