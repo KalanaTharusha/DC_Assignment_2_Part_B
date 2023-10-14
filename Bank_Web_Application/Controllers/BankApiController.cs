@@ -84,6 +84,7 @@ namespace Bank_Web_Application.Controllers
             Transaction deposit = new Transaction();
             deposit.AccountId = transaction.AccountId;
             deposit.Amount = transaction.Amount;
+            deposit.Description = transaction.Description;
             deposit.DateTime = DateTime.Now;
             deposit.Type = Transaction.TransactionType.Deposit;
             request.AddBody(deposit);
@@ -102,6 +103,7 @@ namespace Bank_Web_Application.Controllers
             Transaction withdrawal = new Transaction();
             withdrawal.AccountId = transaction.AccountId;
             withdrawal.Amount = transaction.Amount;
+            withdrawal.Description = transaction.Description;
             withdrawal.DateTime = DateTime.Now;
             withdrawal.Type = Transaction.TransactionType.Withdrawal;
             request.AddBody(withdrawal);
@@ -126,6 +128,7 @@ namespace Bank_Web_Application.Controllers
                 Transaction deposit = new Transaction();
                 deposit.AccountId = beneficiary.AccountId;
                 deposit.Amount = transaction.Amount;
+                deposit.Description = transaction.Description;
                 deposit.DateTime = DateTime.Now;
                 deposit.Type = Transaction.TransactionType.Deposit;
 
