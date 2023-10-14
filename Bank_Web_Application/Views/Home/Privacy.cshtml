@@ -519,6 +519,8 @@
             const date = now.toISOString();
 
 
+
+
             fetch("http://localhost:5237/bankApi/transfer?to=" + accountNumber, {
                 method: "POST",
                 headers: {
@@ -527,7 +529,7 @@
                 body: JSON.stringify({
                     "amount": amount,
                     "accountId": parseInt(user.accounts[0].accountId),
-                    "description": "HARDCODEEEE",
+                    "description": description,
                     "dateTime": date
                 })
             })
