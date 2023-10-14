@@ -33,14 +33,14 @@ namespace Bank_Data_Web_Service.Controllers
         }
 
         // GET: api/Transactions/
-        [HttpGet("accNo/{no}")]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int no)
+        [HttpGet("accId/{id}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int id)
         {
             if (_context.Transaction == null)
             {
                 return NotFound();
             }
-            return await _context.Transaction.Where(t => t.AccountId == no).ToListAsync();
+            return await _context.Transaction.Where(t => t.AccountId == id).ToListAsync();
         }
 
         // GET: api/Transactions/5

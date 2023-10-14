@@ -17,7 +17,6 @@ namespace Bank_Data_DLL
         public int Phone { get; set; }
         public string Picture { get; set; }
         public string Password { get; set; }
-        [JsonIgnore]
         public ICollection<Account> Accounts { get; set; }
 
         public enum UserRole
