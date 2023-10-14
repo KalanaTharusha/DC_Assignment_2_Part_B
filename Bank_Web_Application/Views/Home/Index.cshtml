@@ -114,43 +114,58 @@
 
         async function login() {
             event.preventDefault();
-
+            const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
             var email = document.getElementById("email").value;
             var password = document.getElementById("password").value;
 
-            await fetch("http://localhost:5237/bankApi/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "email": email,
-                    "password": password
+            // Check if email and password are not empty
+            if (!email || !password) {
+                errorMessageElement.textContent = 'Both Email and Password are required';
+                setTimeout(function () {
+                    errorMessageElement.textContent = '';
+                }, 4000);
+                return;
+            }
+            else {
+                await fetch("http://localhost:5237/bankApi/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "email": email,
+                        "password": password
+                    })
                 })
-            })
-                .then(async response => {
-                    if (response.ok) {
-                        const jsondata = await response.json();
-                        // Store the JSON data in a cookie
-                        const jsondataString = JSON.stringify(jsondata);
-                        document.cookie = "user=" + jsondataString;
-                        // Redirect to another page if needed
-                         window.location.href = "http://localhost:5237/Home/Privacy";
-                    }
-                    else {
-                        alert("Invalid Credentials");
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+                    .then(async response => {
+                        if (response.ok) {
+                            const jsondata = await response.json();
+                            // Store the JSON data in a cookie
+                            const jsondataString = JSON.stringify(jsondata);
+                            document.cookie = "user=" + jsondataString;
+                            // Redirect to another page if needed
+                            window.location.href = "http://localhost:5237/Home/Privacy";
+                        }
+                        else {
+                            // Display an error message
+                            document.getElementById("hint").textContent = "Invalid Credentials";
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
 
-            console.log(email);
+                console.log(email);
+            }
         }
 
+        // Attach the login function to the form's submit event
+        document.getElementById("loginForm").addEventListener("submit", login);
 
-       
-      
+
+
+
+
     </script>
 
 </head>
@@ -164,7 +179,7 @@
         <div class="input-container">
             <input placeholder="Enter password" id="password" type="password" required>
         </div>
-        <div class="error-message"></div>
+        <p id="errorMessage" class="error-message"></p>
         <button class="submit" id="signin" type="submit" onclick="login()">Sign In</button>
 
     </form>
