@@ -188,5 +188,15 @@ namespace Bank_Web_Application.Controllers
             return transactions;
         }
 
+        [HttpPut]
+        public User UpdateUser([FromBody] User user) 
+        { 
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/users/{id}", Method.Put);
+            request.AddUrlSegment("id", user.UserId);
+            RestResponse response = client.Execute(request);
+            return user;
+        }
+
     }
 }
