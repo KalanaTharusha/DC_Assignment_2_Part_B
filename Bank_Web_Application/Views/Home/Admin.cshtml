@@ -216,7 +216,7 @@
         }
 
         .userManagement button {
-            padding: 10px 20px; /* Updated button padding */
+            padding: 10px 20px;
             background-color: #4F46E5;
             color: white;
             border: none;
@@ -224,12 +224,6 @@
             cursor: pointer;
             margin-right: 5px;
         }
-
-            .userManagement button i {
-                font-size: 16px;
-                margin: 10px;
-                padding: 10px;
-            }
 
         .create-user-button {
             font-weight: bold;
@@ -289,7 +283,6 @@
 
         button {
             padding: 10px 20px;
-            background-color: #4F46E5;
             color: white;
             border: none;
             border-radius: 5px;
@@ -548,6 +541,14 @@
             font-weight: bold;
         }
 
+        .deactivateButton{
+            background-color: red;
+        }
+
+        .activateButton{
+            background-color: green;
+        }
+
     </style>
 </head>
 <body>
@@ -628,7 +629,7 @@
             <!-- Search Users -->
             <div class="search-users">
                 <div class="search-input">
-                    <input type="text" id="searchUserInput" placeholder="Search users...">
+                    <input type="text" id="searchUserInput" placeholder="Search users..." >
                 </div>
                 <div class="search-button">
                     <button onclick="searchUsers()">Search</button>
@@ -645,16 +646,18 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="userTableBody">
                         <tr>
                             <td>1</td>
                             <td>John Doe</td>
                             <td>johndoe@example.com</td>
                             <td>Active</td>
+                            <td><button onclick="deactivateUser">Deactivate</button></td>
                         </tr>
-                        <!-- Add more user rows as needed -->
+                        
                     </tbody>
                 </table>
 
@@ -662,7 +665,7 @@
                 <div class="action-buttons">
                     <button onclick="editUser">Edit</button>
                     <button onclick="resetPassword">Reset</button>
-                    <button onclick="deactivateUser">Deactivate</button>
+
                 </div>
             </div>
         </div>
@@ -836,6 +839,46 @@
                 document.getElementById("pictureInput").value = "";
                 document.getElementById("passwordInput").value = "";
             }
+
+            function searchUsers() {
+                var query = document.getElementById("searchUserInput").value;
+
+                fetch("http://localhost:5237/bankApi/search?term=" + query)
+                    .then(async response => {
+                        if (response.ok) {
+                            user = await response.json();
+                            console.log(user);
+                            const accounts = user.accounts;
+                            console.log(accounts);
+                            var tableBody = document.getElementById("userTableBody");
+
+                            tableBody.innerHTML = "";
+
+                            accounts.forEach(account => {
+                                tableBody.innerHTML += `
+                                    <tr>
+                                        <td>${user.userId}</td>
+                                        <td>${user.name}</td>
+                                        <td>${user.email}</td>
+                                        <td>${account.accountNo}</td>
+
+                                                    <td>${account.status === 0 ? `<button class="deactivateButton" onclick= "deactivateUser(${account.userId})" > Deactivate </button>` : `<button class="activateButton" onclick="deactivateUser(${account.userId})">Activate</button>`}</td>
+
+                                    </tr>`;
+                            });
+                        } else {
+                            alert("Invalid Account Number");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+
+            function deactivateUser(userId) {
+                // Implement the user deactivation logic here
+            }
+
 
             function logActions(string) {
                 var logs = document.getElementById("logs");
