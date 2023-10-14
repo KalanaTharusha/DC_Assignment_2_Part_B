@@ -102,30 +102,6 @@ namespace Bank_Data_Web_Service.Controllers
               return Problem("Entity set 'DBManager.Transaction'  is null.");
           }
             _context.Transaction.Add(transaction);
-            var account = await _context.Account.FindAsync(transaction.AccountId);
-            if(account == null)
-            {
-                return NotFound(transaction.AccountId);
-            }
-
-            double balance = account.Balance;
-
-            if (transaction.Type == Transaction.TransactionType.Deposit)
-            {
-                account.Balance = balance + transaction.Amount;
-            }
-            else
-            {
-                if (balance > 0 && transaction.Amount < balance)
-                {
-                    account.Balance = balance - transaction.Amount;
-                }
-                else
-                {
-                    return Problem("Not enough balance");
-                }
-            }
-
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTransaction", new { id = transaction.TransactionId }, transaction);
