@@ -194,6 +194,7 @@ namespace Bank_Web_Application.Controllers
             client = new RestClient(DataService);
             RestRequest request = new RestRequest("api/users/{id}", Method.Put);
             request.AddUrlSegment("id", user.UserId);
+            request.AddBody(user);
             RestResponse response = client.Execute(request);
             return user;
         }

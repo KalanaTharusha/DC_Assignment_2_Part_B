@@ -64,5 +64,7 @@ namespace Bank_Data_Web_Service.Data
         public DbSet<Bank_Data_DLL.Account>? Account { get; set; }
 
         public DbSet<Bank_Data_DLL.Transaction>? Transaction { get; set; }
+
+        public DbSet<Bank_Data_DLL.Log>? Log { get; set; }
     }
 }
