@@ -60,7 +60,9 @@ namespace Bank_Data_Web_Service.Controllers
             {
                 return NotFound();
             }
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email.Equals(e));
+            var user = await _context.User
+                .Include (u => u.Accounts)
+                .FirstOrDefaultAsync(u => u.Email.Equals(e));
 
             if (user == null)
             {
