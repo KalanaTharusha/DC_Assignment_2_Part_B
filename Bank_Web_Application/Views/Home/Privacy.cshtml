@@ -282,11 +282,11 @@
                 <div class="account-details">
                     <div class="account-detail">
                         <p class="accountTitle">Account Number</p>
-                        <p class="accountText" id="accountNumber">123456789</p>
+                        <p class="accountText" id="accountNumber">0000000000</p>
                     </div>
                     <div class="account-detail">
                         <p class="accountTitle">Current Balance</p>
-                        <p class="accountText" id="accountBalance">$5,000.00</p>
+                        <p class="accountText" id="accountBalance">$ 0</p>
                     </div>
                 </div>
                 <div class="logoutButton">
@@ -313,7 +313,8 @@
         <div class="transactionCard card">
             <div class="transactionDetails">
                 <p class="transactionTitle">Transaction History</p>
-                <table class="transactionTable">
+
+                <table class="transactionTable" id="transactions">
                     <tr>
                         <th>Transaction Date</th>
                         <th>Description</th>
@@ -328,6 +329,7 @@
                     </tr>
                     <!-- Add more rows for additional transactions as needed -->
                 </table>
+
             </div>
         </div>
     </div>
@@ -347,11 +349,9 @@
 
             if (cookieData) {
                 var jsonData = JSON.parse(cookieData);
-                document.getElementById('name').textContent = jsonData.name;
-                document.getElementById('email').textContent = jsonData.email;
-                document.getElementById('phone').textContent = jsonData.phone;
 
 
+                fetchAccountDetails(jsonData.email);
 
 
 
@@ -366,13 +366,32 @@
                     if (response.ok) {
                         const jsondata = await response.json();
                         console.log(jsondata);
-                        document.getElementById('name').textContent = jsonData.name;
-                        document.getElementById('email').textContent = jsonData.email;
-                        document.getElementById('phone').textContent = jsonData.phone;
-                        document.getElementById("accountNumber").textContent = jsondata.userId;
-                        document.getElementById("accountBalance").textContent = jsondata.balance;
-                        
+                        document.getElementById("name").textContent = jsondata.name;
+                        document.getElementById("email").textContent = jsondata.email;
+                        document.getElementById("phone").textContent = jsondata.phone;
+                        document.getElementById("accountNumber").textContent = jsondata.accounts[0].accountNo;
+                        document.getElementById("accountBalance").textContent = jsondata.accounts[0].balance;
+                        var transactionTable = [{
+                            "transactionId": 1,
+                            "type": 0,
+                            "amount": 500,
+                            "dateTime": "2023-10-13T00:00:00",
+                            "description": null,
+                            "accountId": 1
+                        }];
+                        transactionTable.unshift(<tr>
+                            <th>Transaction Date < /th>
+                            < th > Description < /th>
+                            < th > Amount < /th>
 
+                        < /tr>)
+                        document.getElementById("transactions").innerHTML = transactionTable.map(transaction => {
+                            return `<tr>
+                                <td>${transaction.dateTime}</td>
+                                <td>${transaction.description}</td>
+                                <td>${transaction.amount}</td>
+                                </tr>`;
+                        }).join('');
                     }
                     else {
                         alert("Invalid Account Number");
