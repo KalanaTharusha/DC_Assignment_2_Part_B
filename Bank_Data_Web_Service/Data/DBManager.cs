@@ -13,6 +13,7 @@ namespace Bank_Data_Web_Service.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             List<User> users = new List<User>();
+            List<Account> accounts = new List<Account>();
 
             User user = new User();
             user.UserId = 1;
@@ -27,6 +28,17 @@ namespace Bank_Data_Web_Service.Data
 
             user = new User();
             user.UserId = 2;
+            user.Name = "user1";
+            user.Role = Bank_Data_DLL.User.UserRole.client;
+            user.Email = "user1@email.com";
+            user.Address = "user1 address";
+            user.Phone = 0710000002;
+            user.Picture = "user1 picture url";
+            user.Password = "user1pass";
+            users.Add(user);
+
+            user = new User();
+            user.UserId = 3;
             user.Name = "user2";
             user.Role = Bank_Data_DLL.User.UserRole.client;
             user.Email = "user2@email.com";
@@ -36,26 +48,33 @@ namespace Bank_Data_Web_Service.Data
             user.Password = "user2pass";
             users.Add(user);
 
-            user = new User();
-            user.UserId = 3;
-            user.Name = "user3";
-            user.Role = Bank_Data_DLL.User.UserRole.client;
-            user.Email = "user3@email.com";
-            user.Address = "user3 address";
-            user.Phone = 0710000003;
-            user.Picture = "user3 picture url";
-            user.Password = "user3pass";
-            users.Add(user);
-
             Account account = new Account();
             account.AccountId = 1;
-            account.AccountNo = 21;
+            account.AccountNo = 6786887;
             account.Status = Bank_Data_DLL.Account.AccountStatus.Activated;
-            account.Balance = 99999;
+            account.Balance = 99999.00;
             account.UserId = 2;
+            accounts.Add(account);
+            
+
+            account = new Account();
+            account.AccountId = 2;
+            account.AccountNo = 2454567;
+            account.Status = Bank_Data_DLL.Account.AccountStatus.Activated;
+            account.Balance = 4354.00;
+            account.UserId = 2;
+            accounts.Add(account);
+
+            account = new Account();
+            account.AccountId = 3;
+            account.AccountNo = 567577;
+            account.Status = Bank_Data_DLL.Account.AccountStatus.Activated;
+            account.Balance = 13214.00;
+            account.UserId = 3;
+            accounts.Add(account);
 
             modelBuilder.Entity<User>().HasData(users);
-            modelBuilder.Entity<Account>().HasData(account);
+            modelBuilder.Entity<Account>().HasData(accounts);
 
         }
 

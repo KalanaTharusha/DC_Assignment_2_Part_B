@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bank_Data_Web_Service.Migrations
 {
     [DbContext(typeof(DBManager))]
-    [Migration("20231014230028_InitialCreate")]
+    [Migration("20231015153653_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -48,10 +48,26 @@ namespace Bank_Data_Web_Service.Migrations
                         new
                         {
                             AccountId = 1,
-                            AccountNo = 21,
+                            AccountNo = 6786887,
                             Balance = 99999.0,
                             Status = 0,
                             UserId = 2
+                        },
+                        new
+                        {
+                            AccountId = 2,
+                            AccountNo = 2454567,
+                            Balance = 4354.0,
+                            Status = 0,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            AccountId = 3,
+                            AccountNo = 567577,
+                            Balance = 13214.0,
+                            Status = 0,
+                            UserId = 3
                         });
                 });
 
@@ -149,23 +165,23 @@ namespace Bank_Data_Web_Service.Migrations
                         new
                         {
                             UserId = 2,
+                            Address = "user1 address",
+                            Email = "user1@email.com",
+                            Name = "user1",
+                            Password = "user1pass",
+                            Phone = 710000002,
+                            Picture = "user1 picture url",
+                            Role = 0
+                        },
+                        new
+                        {
+                            UserId = 3,
                             Address = "user2 address",
                             Email = "user2@email.com",
                             Name = "user2",
                             Password = "user2pass",
                             Phone = 710000002,
                             Picture = "user2 picture url",
-                            Role = 0
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Address = "user3 address",
-                            Email = "user3@email.com",
-                            Name = "user3",
-                            Password = "user3pass",
-                            Phone = 710000003,
-                            Picture = "user3 picture url",
                             Role = 0
                         });
                 });

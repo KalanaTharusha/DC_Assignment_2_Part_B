@@ -98,14 +98,19 @@ namespace Bank_Data_Web_Service.Migrations
                 values: new object[,]
                 {
                     { 1, "admin address", "admin@email.com", "admin", "adminpass", 710000001, "admin picture url", 1 },
-                    { 2, "user2 address", "user2@email.com", "user2", "user2pass", 710000002, "user2 picture url", 0 },
-                    { 3, "user3 address", "user3@email.com", "user3", "user3pass", 710000003, "user3 picture url", 0 }
+                    { 2, "user1 address", "user1@email.com", "user1", "user1pass", 710000002, "user1 picture url", 0 },
+                    { 3, "user2 address", "user2@email.com", "user2", "user2pass", 710000002, "user2 picture url", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Account",
                 columns: new[] { "AccountId", "AccountNo", "Balance", "Status", "UserId" },
-                values: new object[] { 1, 21, 99999.0, 0, 2 });
+                values: new object[,]
+                {
+                    { 1, 6786887, 99999.0, 0, 2 },
+                    { 2, 2454567, 4354.0, 0, 2 },
+                    { 3, 567577, 13214.0, 0, 3 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_UserId",
