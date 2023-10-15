@@ -9,14 +9,19 @@
 
     <style>
 
+        body {
+            background: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+            background-size: cover;
 
-        .error-message {
-            color: red;
-            margin-left: 0.5rem;
-            font-weight: 500;
-            transition: opacity 0.5s ease-in-out;
         }
 
+    .error-message {
+        color: #A91B0D;
+        margin-left: 0.5rem;
+        font-weight: 500;
+        opacity: 0; /* Initially, make it invisible */
+        transition: opacity 0.5s ease-in-out; /* Apply a smooth transition */
+    }
 
         .form {
             position: relative;
@@ -95,24 +100,44 @@
         }
 
     </style>
+</head>
+<body>
+
+    <form class="form" id="login-form">
+        <p class="form-title">Sign in to your account</p>
+        <div class="input-container">
+            <input placeholder="Enter email" id="email" type="email" required>
+        </div>
+        <div class="input-container">
+            <input placeholder="Enter password" id="password" type="password" required>
+        </div>
+        <p id="errorMessage" class="error-message"></p>
+        <button class="submit" id="signin" type="submit" onclick="login()">Sign In</button>
+
+    </form>
 
     <script>
+        async function displayErrorMessage(message, timeout) {
+            const errorMessageElement = document.getElementById("errorMessage");
+            errorMessageElement.textContent = message;
+            errorMessageElement.style.opacity = 1; // Make it visible
+            setTimeout(function () {
+                errorMessageElement.style.opacity = 0; // Fade out smoothly
+                setTimeout(function () {
+                    errorMessageElement.textContent = ''; // Clear the message
+                }, 500); // Adjust the timeout to match the CSS transition time
+            }, timeout);
+        }
 
         async function login() {
             event.preventDefault();
-            const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
             var email = document.getElementById("email").value;
             var password = document.getElementById("password").value;
 
-            // Check if email and password are not empty
             if (!email || !password) {
-                errorMessageElement.textContent = 'Both Email and Password are required';
-                setTimeout(function () {
-                    errorMessageElement.textContent = '';
-                }, 4000);
+                displayErrorMessage('Both Email and Password are required', 4000);
                 return;
-            }
-            else {
+            } else {
                 await fetch("http://localhost:5237/bankApi/login", {
                     method: "POST",
                     headers: {
@@ -129,41 +154,28 @@
                             // Store the JSON data in a cookie
                             const jsondataString = JSON.stringify(jsondata);
                             document.cookie = "user=" + jsondataString;
-                            // Redirect to another page if needed
-                            window.location.href = "http://localhost:5237/Home/Privacy";
+
+                            if (jsondata.role === 0) {
+                                window.location.href = "http://localhost:5237/Home/Privacy";
+                            }
+                            else if (jsondata.role === 1) {
+                                window.location.href = "http://localhost:5237/Home/Admin";
+                            }
                         }
                         else {
-                            // Display an error message
-                            document.getElementById("hint").textContent = "Invalid Credentials";
+
+                            displayErrorMessage('Invalid Email or Password', 4000);
                         }
                     })
                     .catch(error => {
                         console.log(error);
                     });
 
-                console.log(email);
             }
         }
 
-        // Attach the login function to the form's submit event
-        document.getElementById("loginForm").addEventListener("submit", login);
-
+        document.getElementById("login-form").addEventListener("submit", login);
     </script>
 
-</head>
-<body>
-
-    <form class="form" id="login-form">
-        <p class="form-title">Sign in to your account</p>
-        <div class="input-container">
-            <input placeholder="Enter email" id="email" type="email" required>
-        </div>
-        <div class="input-container">
-            <input placeholder="Enter password" id="password" type="password" required>
-        </div>
-        <p id="errorMessage" class="error-message"></p>
-        <button class="submit" id="signin" type="submit" onclick="login()">Sign In</button>
-
-    </form>
 </body>
 </html>

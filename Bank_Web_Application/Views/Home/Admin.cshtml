@@ -13,6 +13,10 @@
 
     <title>Admin Dashboard</title>
     <style>
+        body {
+            background: radial-gradient(328px at 2.9% 15%, rgb(191, 224, 251) 0%, rgb(232, 233, 251) 25.8%, rgb(252, 239, 250) 50.8%, rgb(234, 251, 251) 77.6%, rgb(240, 251, 244) 100.7%);
+            background-size: cover;
+        }
 
         .card {
             height: auto;
@@ -58,7 +62,7 @@
 
             .welcomeMessage.welcomeMessage-right {
                 font-size: 2rem;
-                font-weight: 700;
+                font-weight: 500;
                 text-align: right;
                 margin-top: auto;
                 margin-right: 20px;
@@ -145,6 +149,7 @@
 
         .input-container {
             position: relative;
+            width: 100%;
         }
 
             .input-container input, .form button {
@@ -155,9 +160,7 @@
 
             .input-container input {
                 background-color: #fff;
-                margin-left: 50px;
                 padding: 1rem;
-                padding-right: 3rem;
                 font-size: 0.875rem;
                 line-height: 1.25rem;
                 width: 100%;
@@ -165,26 +168,9 @@
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             }
 
-            .input-container span {
-                display: grid;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: 1rem;
-                padding-left: 1rem;
-                place-content: center;
-            }
-
-                .input-container span svg {
-                    padding-block-end: 0.125rem;
-                    color: #9CA3AF;
-                    width: 1rem;
-                    height: 1rem;
-                }
 
         .submit {
             display: block;
-            margin-left: 50px;
             padding: 0.75rem 1.25rem;
             background-color: #4F46E5;
             color: #ffffff;
@@ -335,7 +321,6 @@
             .transactionManagement h2 {
                 font-size: 1.5rem;
                 color: #333;
-                margin-bottom: 15px;
             }
 
         .search-transactions {
@@ -367,6 +352,17 @@
             width: 100%; /* Make the button the same width as the input field */
         }
 
+        .edit-button button {
+            padding: 10px;
+            background-color: #4F46E5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
+            width: 100%; /* Make the button the same width as the input field */
+        }
+
         .transaction-list table {
             width: 100%;
             border-collapse: collapse;
@@ -381,26 +377,24 @@
         /* Add any additional styling as needed */
 
         .filter-sort-options {
-            margin-left: 10px; /* Updated margin for better spacing */
             margin: 10px 0; /* Updated margin for better spacing */
             display: flex;
+            width: 100%;
             flex-direction: column;
             align-items: flex-start;
         }
 
             .filter-sort-options label, .filter-sort-options select {
-                margin-right: 10px; /* Updated margin for better spacing */
-                margin-left: 10px; /* Updated margin for better spacing */
                 margin-bottom: 4px; /* Slightly reduced margin for better spacing */
                 font-size: 16px; /* Adjust font size for better readability */
             }
 
-            /* Optional: Add a border to the select elements to make them stand out more */
+
             .filter-sort-options select {
-                margin-left: 10px; /* Updated margin for better spacing */
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 padding: 8px;
+                width: 100%;
             }
 
 
@@ -458,7 +452,7 @@
             padding: 10px;
             border-radius: 5px;
             white-space: pre-wrap;
-            max-height: 600px;
+            max-height: 200px;
             width: 90%;
             overflow-y: auto;
             font-family: monospace;
@@ -481,9 +475,7 @@
             left: 0;
         }
 
-        .popupShow {
-            display: flex;
-        }
+
 
         .popupCard {
             max-height: 50vh;
@@ -541,12 +533,39 @@
             font-weight: bold;
         }
 
-        .deactivateButton{
-            background-color: red;
+        .buttonCell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .activateButton{
-            background-color: green;
+        .editUser {
+            position: fixed;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .editUserForm {
+            display: flex;
+            width: 50%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popupShow {
+            display: flex;
         }
 
     </style>
@@ -559,20 +578,54 @@
             <div class="edit">
                 <p class="editTitle">Edit Details</p>
                 <p class="editFieldLabel">Password</p>
-                <input type="text" id="editName" class="editField">
+                <input type="text" id="password" class="editField">
                 <p class="editFieldLabel">Confirm Password</p>
-                <input type="text" id="editPhoneNo" class="editField">
-                <button class="sendButton" onclick="sendTransaction()">Edit</button>
+                <input type="text" id="confirmPassword" class="editField">
+                <button class="sendButton" onclick="resetPassword()">Edit</button>
                 <p id="errorMessage" class="error-message"></p>
             </div>
         </div>
     </div>
 
+    <div class="editUser" id="editUser">
+        <form class="createUserForm editUserForm" id="updateUserForm">
+            <button type="button" class="popupCloseBtn" onclick="toggleEditUser()">X</button>
+            <h2 class="card-title">Update User</h2>
+            <div class="input-container">
+                <input placeholder="Name" type="text" id="editNameInput">
+            </div>
+            <div class="input-container">
+                <input placeholder="Email" type="email" id="editEmailInput">
+            </div>
+
+            <div class="input-container">
+                <input placeholder="Address" type="text" id="editAddressInput">
+            </div>
+
+            <div class="input-container">
+                <input placeholder="Phone Number" type="tel" id="editPhoneInput">
+            </div>
+            <div class="input-container">
+                <input placeholder="Profile Picture URL" type="text" id="editPictureInput">
+            </div>
+
+            <div class="input-container">
+                <input placeholder="Password" type="password" id="editPasswordInput">
+            </div>
+
+            <div class="error-message"></div>
+            <button class="submit" type="button" onclick="editUser()">Update Account</button>
+        </form>
+    </div>
+
+
     <div class="card-container">
         <!-- Admin Profile Information Section -->
         <div class="profile-card card">
             <div class="profileImage">
-                <img src="https://picsum.photos/200/200" alt="Profile Image">
+
+                <img src="https://source.unsplash.com/400x400/?portrait" alt="Profile Image">
+
             </div>
             <div class="userDetails">
                 <p class="name" id="name">Pepper Potts</p>
@@ -582,7 +635,9 @@
             </div>
 
             <div class="welcomeMessage welcomeMessage-right">
-                <p class="accountText">Trust Bitcoin! It's better than your bank :)</p>
+                <!-- Add the welcomeMessage-right class -->
+                <p class="accountText"><b>Trust Bitcoin!</b> It's better than your bank :)</p>
+
             </div>
         </div>
 
@@ -629,10 +684,12 @@
             <!-- Search Users -->
             <div class="search-users">
                 <div class="search-input">
-                    <input type="text" id="searchUserInput" placeholder="Search users..." >
+                    <input type="text" id="searchUserInput" placeholder="Search users...">
                 </div>
                 <div class="search-button">
                     <button onclick="searchUsers()">Search</button>
+                    <button style="margin-top: 1px" onclick="toggleEditUser()">Edit</button>
+                    <button onclick="createAccount()">Create Account</button>
                 </div>
             </div>
 
@@ -642,31 +699,15 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>User ID</th>
+                            <th>Acc. No</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
-                        <tr>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>johndoe@example.com</td>
-                            <td>Active</td>
-                            <td><button onclick="deactivateUser">Deactivate</button></td>
-                        </tr>
-                        
                     </tbody>
                 </table>
-
-                <!-- Buttons on the right side, stacked on top of each other -->
-                <div class="action-buttons">
-                    <button onclick="editUser">Edit</button>
-                    <button onclick="resetPassword">Reset</button>
-
-                </div>
             </div>
         </div>
 
@@ -682,26 +723,26 @@
                     <input type="text" id="searchTransactionInput" placeholder="Search transactions...">
                 </div>
                 <div class="search-button">
-                    <button onclick="searchTransactions()">Search</button>
+                    <button onclick="searchUserTransaction()">Search</button>
+
                 </div>
-            </div>
 
-            <!-- Filter and Sort Options -->
-            <div class="filter-sort-options">
-                <label for="filterByStatus">Filter by Status:</label>
-                <select id="filterByStatus">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
-                    <!-- Add more status options as needed -->
-                </select>
+                <div class="filter-sort-options">
+                    <label for="filterByStatus">Filter by Status:</label>
+                    <select id="filterByStatus" onchange="filterOnChangeListener()">
+                        <option value="All">All</option>
+                        <option value="Withdrawals">Withdrawals</option>
+                        <option value="Deposits">Deposits</option>
+                        <!-- Add more status options as needed -->
+                    </select>
 
-                <label for="sortBy">Sort by:</label>
-                <select id="sortBy">
-                    <option value="date">Date</option>
-                    <option value="amount">Amount</option>
-                    <!-- Add more sorting options as needed -->
-                </select>
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy" onchange="sortOnChangeListener()">
+                        <option value="None">None</option>
+                        <option value="Date">Date - Newest to Oldest</option>
+                        <!-- Add more sorting options as needed -->
+                    </select>
+                </div>
             </div>
 
             <!-- Transaction Listing -->
@@ -710,20 +751,14 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Transaction ID</th>
-                            <th>User ID</th>
                             <th>Date</th>
+                            <th>Description</th>
                             <th>Amount</th>
-                            <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="transactionTableBody">
                         <tr>
-                            <td>101</td>
-                            <td>1</td>
-                            <td>2023-10-14</td>
-                            <td>$50.00</td>
-                            <td>Completed</td>
+
                         </tr>
                         <!-- Add more transaction rows as needed -->
                     </tbody>
@@ -737,15 +772,17 @@
 
             <pre class="log-console">
             <code id="logs">
-[Log ID 1] AdminUser123: Modified user profile - 2023-10-14 10:30 AM
-[Log ID 2] AdminUser456: Created new user account - 2023-10-14 11:15 AM
-[Log ID 3] AdminUser789: Updated system settings - 2023-10-14 12:00 PM</code>
+            <br>
+            </code>
     </pre>
         </div>
 
         <script>
 
             var user;
+            var searchUser;
+            var result;
+            var transactions;
 
             document.addEventListener("DOMContentLoaded", function () {
 
@@ -787,8 +824,6 @@
             }
 
             function signUp() {
-
-
                 var name = document.getElementById("nameInput").value;
                 var email = document.getElementById("emailInput").value;
                 var address = document.getElementById("addressInput").value;
@@ -843,12 +878,14 @@
             function searchUsers() {
                 var query = document.getElementById("searchUserInput").value;
 
+
+
                 fetch("http://localhost:5237/bankApi/search?term=" + query)
                     .then(async response => {
                         if (response.ok) {
-                            user = await response.json();
-                            console.log(user);
-                            const accounts = user.accounts;
+                            searchUser = await response.json();
+                            console.log(searchUser);
+                            const accounts = searchUser.accounts;
                             console.log(accounts);
                             var tableBody = document.getElementById("userTableBody");
 
@@ -856,15 +893,12 @@
 
                             accounts.forEach(account => {
                                 tableBody.innerHTML += `
-                                    <tr>
-                                        <td>${user.userId}</td>
-                                        <td>${user.name}</td>
-                                        <td>${user.email}</td>
-                                        <td>${account.accountNo}</td>
-
-                                                    <td>${account.status === 0 ? `<button style="background-color: red;" onclick="alert('works')">Deactivate</button>` : `<button style="background-color: green;" onclick="alert('works')">Activate</button>`}</td>
-
-                                    </tr>`;
+                                                                                                <tr>
+                                                                                                    <td>${account.accountNo}</td>
+                                                                                                    <td>${searchUser.name}</td>
+                                                                                                    <td>${searchUser.email}</td>
+                                                                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="toggleUserAccount(${account.accountId})">Deactivate</button>` : `<button style="background-color: green;" onclick="toggleUserAccount(${account.accountId})">Activate</button>`}</td>
+                                                                                                </tr>`;
                             });
                         } else {
                             alert("Invalid Account Number");
@@ -875,23 +909,272 @@
                     });
             }
 
-            function deactivateUser(userId) {
-                // Implement the user deactivation logic here
+
+
+            function editUser() {
+
+                searchUser.name = document.getElementById("editNameInput").value;
+                searchUser.email = document.getElementById("editEmailInput").value;
+                searchUser.address = document.getElementById("editAddressInput").value;
+                searchUser.phone = parseInt(document.getElementById("editPhoneInput")).value;
+                searchUser.picture = document.getElementById("editPictureInput").value;
+                searchUser.password = document.getElementById("editPasswordInput").value;
+
+                console.log(searchUser);
+
+                fetch("http://localhost:5237/bankApi/updateUser", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(searchUser)
+                })
+                    .then(async response => {
+                        if (response.ok) {
+                            var result = await response.json();
+                            console.log(result);
+                            toggleEditUser();
+                            alert("User Updated Successfully");
+                            logActions("User Updated Successfully");
+                        }
+                        else {
+                            alert("Invalid Account");
+                            logActions("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
             }
 
+            function resetPassword() {
+                var password = document.getElementById("password").value;
+                var confirmPassword = document.getElementById("confirmPassword").value;
 
-            function logActions(string) {
-                var logs = document.getElementById("logs");
-                logs.innerHTML += `${string} <br>`;
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match");
+                }
+                else {
 
+                    user.password = password;
+
+                    fetch("http://localhost:5237/bankApi/updateUser", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(user)
+                    })
+                        .then(async response => {
+                            if (response.ok) {
+                                var result = await response.json();
+                                console.log(result);
+                                alert("User Updated Successfully");
+
+                                document.getElementById("password").value = "";
+                                document.getElementById("confirmPassword").value = "";
+                                toggleCard();
+                                logActions("User Updated Successfully");
+                            }
+                            else {
+                                alert("Invalid Account");
+
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            }
+
+            function createAccount() {
+
+                fetch("http://localhost:5237/bankApi/createAccount?userId=" + searchUser.userId, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(async response => {
+                        if (response.ok) {
+                            var result = await response.json();
+                            searchUsers();
+                            alert("Account Created Successfully! " + result.accountNo);
+                        }
+                        else {
+                            alert("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
 
             }
+
+            function toggleUserAccount(accountId) {
+                fetch("http://localhost:5237/bankApi/toggleAccount?accId=" + accountId, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(async response => {
+                        if (response.ok) {
+                            searchUsers();
+
+                            logActions("User Deactivated Successfully");
+                        }
+                        else {
+                            alert("Invalid Account");
+                            logActions("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
+            }
+
+            function refreshLogs() {
+
+                fetch("http://localhost:5237/bankApi/getLogs")
+                    .then(async response => {
+                        if (response.ok) {
+                            var result = await response.json();
+
+                            var logs = document.getElementById("logs");
+                            logs.innerHTML = "";
+                            result.forEach(log => {
+                                logs.innerHTML += `${log.timeStamp} : ${log.action} - ${log.logMessage}<br>`;
+                            });
+                        }
+                        else {
+                            alert("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+
+            setInterval(refreshLogs, 2500);
 
             function toggleCard() {
-
                 document.getElementById("popup").classList.toggle("popupShow")
+            }
+
+            function toggleEditUser() {
+                var name = document.getElementById("editNameInput");
+                var email = document.getElementById("editEmailInput");
+                var address = document.getElementById("editAddressInput");
+                var phone = parseInt(document.getElementById("editPhoneInput"));
+                var picture = document.getElementById("editPictureInput");
+                var password = document.getElementById("editPasswordInput");
+
+                name.value = searchUser.name;
+                email.value = searchUser.email;
+                address.value = searchUser.address;
+                phone.value = searchUser.phone;
+                picture.value = searchUser.picture;
+                password.value = searchUser.password;
+
+                document.getElementById("editUser").classList.toggle("popupShow")
+            }
+
+            function searchUserTransaction() {
+                var query = document.getElementById("searchTransactionInput").value;
+
+
+                fetch("http://localhost:5237/bankApi/getTransactions?no=" + query)
+                    .then(async response => {
+                        if (response.ok) {
+                            result = await response.json();
+                            transactions = result;
+                            console.log(result);
+                            var tableBody = document.getElementById("transactionTableBody");
+
+                            tableBody.innerHTML = "";
+
+                            result.forEach(transaction => {
+                                tableBody.innerHTML += `
+                                                                                                <tr>
+                                                                                                    <td>${transaction.dateTime}</td>
+                                                                                                    <td>${transaction.description}</td>
+                                                                                                    <td>${transaction.amount}</td>
+                                                                                                </tr>`;
+                            });
+                        } else {
+                            alert("Invalid Account Number");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
 
             }
+
+            function sortOnChangeListener() {
+                var query = document.getElementById("sortBy").value;
+
+                console.log(query);
+                if (query === "Date") {
+                    result.sort(function (a, b) {
+
+                        return new Date(b.dateTime) - new Date(a.dateTime);
+                    });
+                }
+                else if (query === "None") {
+                    result.sort(function (a, b) {
+                        return new Date(a.dateTime) - new Date(b.dateTime);
+                    });
+                }
+                var tableBody = document.getElementById("transactionTableBody");
+
+                tableBody.innerHTML = "";
+                result.forEach(transaction => {
+                    tableBody.innerHTML += `
+                                                                                                            <tr>
+                                                                                                                <td>${transaction.dateTime}</td>
+                                                                                                                <td>${transaction.description}</td>
+                                                                                                                <td>${transaction.amount}</td>
+                                                                                                            </tr>`;
+                });
+            }
+
+            function filterOnChangeListener() {
+                var query = document.getElementById("filterByStatus").value;
+
+                if (query === "Withdrawals") {
+                    result = transactions;
+                    result = result.filter(t => t.amount < 0)
+                }
+                else if (query === "Deposits") {
+                    result = transactions;
+                    result = result.filter(t => t.amount > 0)
+                }
+                else if (query === "All") {
+                    result = transactions;
+                }
+                var tableBody = document.getElementById("transactionTableBody");
+
+                tableBody.innerHTML = "";
+                result.forEach(transaction => {
+                    tableBody.innerHTML += `
+                                                                                                                        <tr>
+                                                                                                                            <td>${transaction.dateTime}</td>
+                                                                                                                            <td>${transaction.description}</td>
+                                                                                                                            <td>${transaction.amount}</td>
+                                                                                                                        </tr>`;
+                });
+
+
+            }
+
+
+
+
         </script>
 </body>
 </html>
