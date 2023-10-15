@@ -76,7 +76,8 @@ namespace Bank_Web_Application.Controllers
         public IActionResult CreateAccount([FromQuery] int userId)
         {
             client = new RestClient(DataService);
-            RestRequest request = new RestRequest("api/users", Method.Get);
+            RestRequest request = new RestRequest("api/users/{id}", Method.Get);
+            request.AddUrlSegment("id", userId);
             RestResponse response = client.Execute(request);
 
             if(response.StatusCode == System.Net.HttpStatusCode.OK)
