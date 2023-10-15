@@ -14,31 +14,38 @@ namespace Bank_Web_Application.Controllers
         [HttpPost]
         public IActionResult Signup([FromBody] User reqBody)
         {
-            client = new RestClient(DataService);
-            RestRequest request = new RestRequest("api/users", Method.Post);
-            request.AddBody(reqBody);
-            RestResponse response = client.Execute(request);
-            User user = JsonConvert.DeserializeObject<User>(response.Content);
+            try
+            {
+                client = new RestClient(DataService);
+                RestRequest request = new RestRequest("api/users", Method.Post);
+                request.AddBody(reqBody);
+                RestResponse response = client.Execute(request);
+                User user = JsonConvert.DeserializeObject<User>(response.Content);
 
-            request = new RestRequest("api/accounts", Method.Post);
-            Account account = new Account();
-            account.AccountNo = (int)((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
-            account.Balance = 0;
-            account.UserId = user.UserId;
-            account.Status = 0;
-            request.AddBody(account);
-            response = client.Execute(request);
+                request = new RestRequest("api/accounts", Method.Post);
+                Account account = new Account();
+                account.AccountNo = (int)((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+                account.Balance = 0;
+                account.UserId = user.UserId;
+                account.Status = 0;
+                request.AddBody(account);
+                response = client.Execute(request);
 
-            Account createdAccount = JsonConvert.DeserializeObject<Account>(response.Content);
+                Account createdAccount = JsonConvert.DeserializeObject<Account>(response.Content);
 
-            Log log = new Log();
-            log.TimeStamp = DateTime.Now;
-            log.Action = "Created";
-            log.LogMessage = "User account created: " + user.UserId;
+                Log log = new Log();
+                log.TimeStamp = DateTime.Now;
+                log.Action = "Created";
+                log.LogMessage = "User account created: " + user.UserId;
 
-            CreateLog(log);
+                CreateLog(log);
 
-            return new ObjectResult(createdAccount) { StatusCode = 201};
+                return new ObjectResult(createdAccount) { StatusCode = 201 };
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -110,14 +117,21 @@ namespace Bank_Web_Application.Controllers
 
 
         [HttpGet]
-        public User GetUser([FromQuery] string email)
+        public IActionResult GetUser([FromQuery] string email)
         {
-            client = new RestClient(DataService);
-            RestRequest request = new RestRequest("api/users/email/{e}", Method.Get);
-            request.AddUrlSegment("e", email);
-            RestResponse response = client.Execute(request);
-            User user = JsonConvert.DeserializeObject<User>(response.Content);
-            return user;
+            try
+            {
+                client = new RestClient(DataService);
+                RestRequest request = new RestRequest("api/users/email/{e}", Method.Get);
+                request.AddUrlSegment("e", email);
+                RestResponse response = client.Execute(request);
+                User user = JsonConvert.DeserializeObject<User>(response.Content);
+                return new ObjectResult(user) { StatusCode = 200 };
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -200,7 +214,7 @@ namespace Bank_Web_Application.Controllers
         }
 
         [HttpGet]
-        public User Search([FromQuery] string term)
+        public IActionResult Search([FromQuery] string term)
         {
             client = new RestClient(DataService);
             RestRequest request = new RestRequest("api/users", Method.Get);
@@ -225,8 +239,13 @@ namespace Bank_Web_Application.Controllers
 
             }
 
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-            return user;
+
+            return new ObjectResult(user) { StatusCode = 200};
         }
 
         [HttpGet]
@@ -265,22 +284,29 @@ namespace Bank_Web_Application.Controllers
         }
 
         [HttpPut]
-        public User UpdateUser([FromBody] User user) 
-        { 
-            client = new RestClient(DataService);
-            RestRequest request = new RestRequest("api/users/{id}", Method.Put);
-            request.AddUrlSegment("id", user.UserId);
-            request.AddBody(user);
-            RestResponse response = client.Execute(request);
+        public IActionResult UpdateUser([FromBody] User user) 
+        {
+            try
+            {
+                client = new RestClient(DataService);
+                RestRequest request = new RestRequest("api/users/{id}", Method.Put);
+                request.AddUrlSegment("id", user.UserId);
+                request.AddBody(user);
+                RestResponse response = client.Execute(request);
 
-            Log log = new Log();
-            log.TimeStamp = DateTime.Now;
-            log.Action = "Update";
-            log.LogMessage = "User account update: " + user.UserId;
+                Log log = new Log();
+                log.TimeStamp = DateTime.Now;
+                log.Action = "Update";
+                log.LogMessage = "User account update: " + user.UserId;
 
-            CreateLog(log);
+                CreateLog(log);
 
-            return user;
+                return new ObjectResult(user) { StatusCode = 200 };
+
+            } catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpPut]
