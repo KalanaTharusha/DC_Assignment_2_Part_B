@@ -564,7 +564,7 @@
                         fetchAccounts(defaultAccountId);
 
                     } else {
-                        alert("Invalid Account Number");
+                        displayErrorMessageBox('Invalid Account', 5000);
                     }
                 })
                 .catch(error => {
@@ -652,20 +652,24 @@
                 })
             })
                 .then(response => {
-                    if (!response.ok) {
+                    if (response.ok) {
+                        displayErrorMessageBox('Transaction Successful!', 5000);
+                    }
+                    else{
+                        displayErrorMessageBox('Transaction Failed', 5000);
                         throw new Error('Request failed with status: ' + response.status);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    displayErrorMessageBox('Transaction Successful', 5000);
+                    
                     document.getElementById("recieverAccountNumber").value = "";
                     document.getElementById("recieverAmount").value = "";
                     document.getElementById("recieverDescription").value = "";
-                    displayErrorMessage('');
+                    
                 })
                 .catch(error => {
-                    displayErrorMessage('Error: ' + error.message, 5000);
+                    displayErrorMessageBox('Error: ' + error.message, 5000);
                 });
         }
 

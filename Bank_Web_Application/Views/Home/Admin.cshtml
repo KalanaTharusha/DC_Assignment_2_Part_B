@@ -568,9 +568,39 @@
             display: flex;
         }
 
+        .error-container {
+            position: fixed;
+            bottom: 0;
+            right: -100%;
+            background-color: #A91B0D;
+            color: white;
+            text-align: center;
+            transition: right 0.5s ease-in-out;
+            width: 320px;
+            padding: 12px;
+            margin-bottom: 1.3rem;
+            margin-right: 1.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            background: #EF665B;
+            border-radius: 8px;
+            box-shadow: 0px 0px 5px -3px #111;
+        }
+
+
+        .error-text {
+            font-weight: 500;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
+    <div id="errorContainer" class="error-container">
+        <p id="errorText" class="error-text"></p>
+    </div>
 
     <div class="popupContainer" id="popup">
         <div class="popupCard card">
@@ -784,6 +814,26 @@
             var result;
             var transactions;
 
+            function displayErrorMessageBox(message, timeout) {
+                const errorContainer = document.getElementById("errorContainer");
+                const errorText = document.getElementById("errorText");
+
+                errorText.textContent = message;
+
+
+                errorContainer.style.right = "0";
+
+                if (timeout) {
+                    setTimeout(function () {
+
+                        errorContainer.style.right = "-100%";
+                        setTimeout(function () {
+                            errorText.textContent = '';
+                        }, 500);
+                    }, timeout);
+                }
+            }
+
             document.addEventListener("DOMContentLoaded", function () {
 
                 var cookieData = document.cookie
@@ -853,11 +903,11 @@
                             var result = await response.json();
                             console.log(result);
 
-                            alert("User Created Successfully");
+                            displayErrorMessageBox("User Created Successfully");
                             logActions("User Created Successfully");
                         }
                         else {
-                            alert("Invalid Account");
+                            displayErrorMessageBox("Invalid Account");
                             logActions("Invalid Account");
                         }
                     })
@@ -901,7 +951,7 @@
                                                                                                 </tr>`;
                             });
                         } else {
-                            alert("Invalid Account Number");
+                            displayErrorMessageBox("Invalid Account Number");
                         }
                     })
                     .catch(error => {
@@ -934,12 +984,12 @@
                             var result = await response.json();
                             console.log(result);
                             toggleEditUser();
-                            alert("User Updated Successfully");
-                            logActions("User Updated Successfully");
+                            displayErrorMessageBox("User Updated Successfully");
+                            
                         }
                         else {
-                            alert("Invalid Account");
-                            logActions("Invalid Account");
+                            displayErrorMessageBox("Invalid Account");
+                            
                         }
                     })
                     .catch(error => {
@@ -953,7 +1003,7 @@
                 var confirmPassword = document.getElementById("confirmPassword").value;
 
                 if (password !== confirmPassword) {
-                    alert("Passwords do not match");
+                    displayErrorMessageBox("Passwords do not match");
                 }
                 else {
 
@@ -970,7 +1020,7 @@
                             if (response.ok) {
                                 var result = await response.json();
                                 console.log(result);
-                                alert("User Updated Successfully");
+                                displayErrorMessageBox("User Updated Successfully");
 
                                 document.getElementById("password").value = "";
                                 document.getElementById("confirmPassword").value = "";
@@ -978,7 +1028,7 @@
                                 logActions("User Updated Successfully");
                             }
                             else {
-                                alert("Invalid Account");
+                                displayErrorMessageBox("Invalid Account");
 
                             }
                         })
@@ -1000,10 +1050,10 @@
                         if (response.ok) {
                             var result = await response.json();
                             searchUsers();
-                            alert("Account Created Successfully! " + result.accountNo);
+                            displayErrorMessageBox("Account Created Successfully! " + result.accountNo);
                         }
                         else {
-                            alert("Invalid Account");
+                            displayErrorMessageBox("Invalid Account");
                         }
                     })
                     .catch(error => {
@@ -1026,8 +1076,8 @@
                             logActions("User Deactivated Successfully");
                         }
                         else {
-                            alert("Invalid Account");
-                            logActions("Invalid Account");
+                            displayErrorMessageBox("Invalid Account");
+                            
                         }
                     })
                     .catch(error => {
@@ -1050,7 +1100,7 @@
                             });
                         }
                         else {
-                            alert("Invalid Account");
+                            displayErrorMessageBox("Invalid Account");
                         }
                     })
                     .catch(error => {
