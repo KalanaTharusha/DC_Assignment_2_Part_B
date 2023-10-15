@@ -31,6 +31,13 @@ namespace Bank_Web_Application.Controllers
 
             Account createdAccount = JsonConvert.DeserializeObject<Account>(response.Content);
 
+            Log log = new Log();
+            log.TimeStamp = DateTime.Now;
+            log.Action = "Created";
+            log.LogMessage = "User account created: " + user.UserId;
+
+            CreateLog(log);
+
             return new ObjectResult(createdAccount) { StatusCode = 201};
         }
 
@@ -196,7 +203,78 @@ namespace Bank_Web_Application.Controllers
             request.AddUrlSegment("id", user.UserId);
             request.AddBody(user);
             RestResponse response = client.Execute(request);
+
+            Log log = new Log();
+            log.TimeStamp = DateTime.Now;
+            log.Action = "Update";
+            log.LogMessage = "User account update: " + user.UserId;
+
+            CreateLog(log);
+
             return user;
+        }
+
+        [HttpPut]
+        public IActionResult ToggleAccount([FromQuery] int accId)
+        {
+            var logMsg = "";
+
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/accounts/{id}", Method.Get);
+            request.AddUrlSegment("id", accId);
+            RestResponse response = client.Execute(request);
+
+            Account account = JsonConvert.DeserializeObject<Account>(response.Content);
+
+
+
+            request = new RestRequest("api/accounts/{id}", Method.Put);
+            request.AddUrlSegment("id", account.AccountId);
+
+            if (account != null)
+            {
+                if(account.Status == Account.AccountStatus.Deactivated)
+                {
+                    account.Status = Account.AccountStatus.Activated;
+                    logMsg = "User account activated: ";
+                }
+                else
+                {
+                    account.Status = Account.AccountStatus.Deactivated;
+                    logMsg = "User account deactivated: ";
+                }
+            }
+
+            request.AddBody(account);
+            response = client.Execute(request);
+
+            Log log = new Log();
+            log.TimeStamp = DateTime.Now;
+            log.Action = "Update";
+            log.LogMessage = logMsg + account.UserId;
+
+            CreateLog(log);
+
+            return NoContent();
+        }
+
+        [HttpGet]
+        public IEnumerable<Log> GetLogs()
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/logs", Method.Get);
+            RestResponse response = client.Execute(request);
+            IEnumerable<Log> logs = JsonConvert.DeserializeObject<IEnumerable<Log>>(response.Content);
+
+            return logs;
+        }
+
+        public void CreateLog(Log log)
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/logs", Method.Post);
+            request.AddBody(log);
+            RestResponse response = client.Execute(request);
         }
 
     }
