@@ -96,6 +96,24 @@
 
     </style>
 
+
+
+</head>
+<body>
+
+    <form class="form" id="login-form">
+        <p class="form-title">Sign in to your account</p>
+        <div class="input-container">
+            <input placeholder="Enter email" id="email" type="email" required>
+        </div>
+        <div class="input-container">
+            <input placeholder="Enter password" id="password" type="password" required>
+        </div>
+        <p id="errorMessage" class="error-message"></p>
+        <button class="submit" id="signin" type="submit" onclick="login()">Sign In</button>
+
+    </form>
+
     <script>
 
         async function login() {
@@ -149,21 +167,5 @@
         document.getElementById("loginForm").addEventListener("submit", login);
 
     </script>
-
-</head>
-<body>
-
-    <form class="form" id="login-form">
-        <p class="form-title">Sign in to your account</p>
-        <div class="input-container">
-            <input placeholder="Enter email" id="email" type="email" required>
-        </div>
-        <div class="input-container">
-            <input placeholder="Enter password" id="password" type="password" required>
-        </div>
-        <p id="errorMessage" class="error-message"></p>
-        <button class="submit" id="signin" type="submit" onclick="login()">Sign In</button>
-
-    </form>
 </body>
 </html>

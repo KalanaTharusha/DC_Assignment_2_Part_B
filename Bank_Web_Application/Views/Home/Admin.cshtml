@@ -317,7 +317,6 @@
             .transactionManagement h2 {
                 font-size: 1.5rem;
                 color: #333;
-                margin-bottom: 15px;
             }
 
         .search-transactions {
@@ -349,6 +348,17 @@
             width: 100%; /* Make the button the same width as the input field */
         }
 
+           .edit-button button {
+            padding: 10px;
+            background-color: #4F46E5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
+            width: 100%; /* Make the button the same width as the input field */
+        }
+
         .transaction-list table {
             width: 100%;
             border-collapse: collapse;
@@ -363,26 +373,24 @@
         /* Add any additional styling as needed */
 
         .filter-sort-options {
-            margin-left: 10px; /* Updated margin for better spacing */
             margin: 10px 0; /* Updated margin for better spacing */
             display: flex;
+            width: 100%;
             flex-direction: column;
             align-items: flex-start;
         }
 
             .filter-sort-options label, .filter-sort-options select {
-                margin-right: 10px; /* Updated margin for better spacing */
-                margin-left: 10px; /* Updated margin for better spacing */
                 margin-bottom: 4px; /* Slightly reduced margin for better spacing */
                 font-size: 16px; /* Adjust font size for better readability */
             }
 
-            /* Optional: Add a border to the select elements to make them stand out more */
+
             .filter-sort-options select {
-                margin-left: 10px; /* Updated margin for better spacing */
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 padding: 8px;
+                width: 100%;
             }
 
 
@@ -672,6 +680,7 @@
                 </div>
                 <div class="search-button">
                     <button onclick="searchUsers()">Search</button>
+                    <button style="margin-top: 1px" onclick="toggleEditUser()">Edit</button>
                 </div>
             </div>
 
@@ -690,13 +699,6 @@
                     <tbody id="userTableBody">
                     </tbody>
                 </table>
-
-                <!-- Buttons on the right side, stacked on top of each other -->
-                <div class="action-buttons">
-                    <button onclick="toggleEditUser()">Edit</button>
-                    <button onclick="resetPassword">Reset</button>
-
-                </div>
             </div>
         </div>
 
@@ -713,12 +715,11 @@
                 </div>
                 <div class="search-button">
                     <button onclick="searchTransactions()">Search</button>
-                </div>
-            </div>
 
-            <!-- Filter and Sort Options -->
-            <div class="filter-sort-options">
-                <label for="filterByStatus">Filter by Status:</label>
+                </div>
+
+                <div class="filter-sort-options">
+              <label for="filterByStatus">Filter by Status:</label>
                 <select id="filterByStatus">
                     <option value="all">All</option>
                     <option value="pending">Pending</option>
@@ -732,6 +733,7 @@
                     <option value="amount">Amount</option>
                     <!-- Add more sorting options as needed -->
                 </select>
+                </div>
             </div>
 
             <!-- Transaction Listing -->
@@ -872,6 +874,8 @@
             function searchUsers() {
                 var query = document.getElementById("searchUserInput").value;
 
+
+
                 fetch("http://localhost:5237/bankApi/search?term=" + query)
                     .then(async response => {
                         if (response.ok) {
@@ -889,10 +893,7 @@
                                                     <td>${account.accountNo}</td>
                                                     <td>${searchUser.name}</td>
                                                     <td>${searchUser.email}</td>
-                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="alert('works')">Deactivate</button>` : `<button style="background-color: green;" onclick="alert('works')">Activate</button>`}</td>
-
-
-
+                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="deactivateUser(${account.accountId})">Deactivate</button>` : `<button style="background-color: green;" onclick="activateUser(${account.accountId})">Activate</button>`}</td>
                                                 </tr>`;
                             });
                         } else {
@@ -930,7 +931,7 @@
                         if (response.ok) {
                             var result = await response.json();
                             console.log(result);
-
+                            toggleEditUser();
                             alert("User Updated Successfully");
                             logActions("User Updated Successfully");
                         }
@@ -943,16 +944,12 @@
                         console.log(error);
                     });
 
-
-            
             }
 
 
             function logActions(string) {
                 var logs = document.getElementById("logs");
                 logs.innerHTML += `${string} <br>`;
-
-
             }
 
             function toggleCard() {
@@ -960,8 +957,6 @@
             }
 
             function toggleEditUser() {
-
-
                 var name = document.getElementById("editNameInput");
                 var email = document.getElementById("editEmailInput");
                 var address = document.getElementById("editAddressInput");

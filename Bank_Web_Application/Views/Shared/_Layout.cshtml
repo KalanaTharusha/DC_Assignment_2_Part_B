@@ -32,19 +32,21 @@
                         @if (ViewContext.RouteData.Values["action"].ToString().Equals("Privacy", StringComparison.OrdinalIgnoreCase))
                         {
                             <li class="nav-item">
-                                <a class="btn btn-custom" asp-area="" asp-controller="Home" asp-action="Index">Sign Out</a>
+                                <button class="btn btn-custom" onclick="logout()">Sign Out</button>
                             </li>
                         }
                         @if (ViewContext.RouteData.Values["action"].ToString().Equals("Admin", StringComparison.OrdinalIgnoreCase))
                         {
                             <li class="nav-item">
-                                <a class="btn btn-custom" asp-area="" asp-controller="Home" asp-action="Index">Sign Out</a>
+                                <button class="btn btn-custom" onclick="logout()">Sign Out</button>
                             </li>
                         }
                     </ul>
                 </div>
             </div>
         </nav>
+
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -61,5 +63,20 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        function logout() {
+            // Display an alert to inform the user they have been logged out
+            alert("You have been logged out!");
+
+            // Delete the 'user' cookie by setting its expiration date to the past
+            document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+            // Redirect to the Home page or any other desired location
+            window.location.href = "/Home/Index";
+        }
+    </script>
+
+
 </body>
 </html>
