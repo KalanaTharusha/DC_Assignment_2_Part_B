@@ -574,10 +574,10 @@
             <div class="edit">
                 <p class="editTitle">Edit Details</p>
                 <p class="editFieldLabel">Password</p>
-                <input type="text" id="editName" class="editField">
+                <input type="text" id="password" class="editField">
                 <p class="editFieldLabel">Confirm Password</p>
-                <input type="text" id="editPhoneNo" class="editField">
-                <button class="sendButton" onclick="sendTransaction()">Edit</button>
+                <input type="text" id="confirmPassword" class="editField">
+                <button class="sendButton" onclick="resetPassword()">Edit</button>
                 <p id="errorMessage" class="error-message"></p>
             </div>
         </div>
@@ -890,12 +890,12 @@
 
                             accounts.forEach(account => {
                                 tableBody.innerHTML += `
-                                                                        <tr>
-                                                                            <td>${account.accountNo}</td>
-                                                                            <td>${searchUser.name}</td>
-                                                                            <td>${searchUser.email}</td>
-                                                                            <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="toggleUserAccount(${account.accountId})">Deactivate</button>` : `<button style="background-color: green;" onclick="toggleUserAccount(${account.accountId})">Activate</button>`}</td>
-                                                                        </tr>`;
+                                                                                                <tr>
+                                                                                                    <td>${account.accountNo}</td>
+                                                                                                    <td>${searchUser.name}</td>
+                                                                                                    <td>${searchUser.email}</td>
+                                                                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="toggleUserAccount(${account.accountId})">Deactivate</button>` : `<button style="background-color: green;" onclick="toggleUserAccount(${account.accountId})">Activate</button>`}</td>
+                                                                                                </tr>`;
                             });
                         } else {
                             alert("Invalid Account Number");
@@ -906,9 +906,7 @@
                     });
             }
 
-            function deactivateUser(userId) {
-                // Implement the user deactivation logic here
-            }
+
 
             function editUser() {
 
@@ -947,8 +945,48 @@
 
             }
 
-            function createAccount(){
-                
+            function resetPassword() {
+                var password = document.getElementById("password").value;
+                var confirmPassword = document.getElementById("confirmPassword").value;
+
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match");
+                }
+                else {
+
+                    user.password = password;
+
+                    fetch("http://localhost:5237/bankApi/updateUser", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(user)
+                    })
+                        .then(async response => {
+                            if (response.ok) {
+                                var result = await response.json();
+                                console.log(result);
+                                alert("User Updated Successfully");
+
+                                document.getElementById("password").value = "";
+                                document.getElementById("confirmPassword").value = "";
+                                toggleCard();
+                                logActions("User Updated Successfully");
+                            }
+                            else {
+                                alert("Invalid Account");
+
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            }
+
+            function createAccount() {
+
                 fetch("http://localhost:5237/bankApi/createAccount?userId=" + searchUser.userId, {
                     method: "POST",
                     headers: {
@@ -957,13 +995,12 @@
                 })
                     .then(async response => {
                         if (response.ok) {
+                            var result = await response.json();
                             searchUsers();
-                            alert("Account Created Successfully");
-                            
+                            alert("Account Created Successfully! " + result.accountNo);
                         }
                         else {
                             alert("Invalid Account");
-                            
                         }
                     })
                     .catch(error => {
@@ -1002,7 +1039,7 @@
                     .then(async response => {
                         if (response.ok) {
                             var result = await response.json();
-                           
+
                             var logs = document.getElementById("logs");
                             logs.innerHTML = "";
                             result.forEach(log => {
@@ -1058,11 +1095,11 @@
 
                             result.forEach(transaction => {
                                 tableBody.innerHTML += `
-                                                                        <tr>
-                                                                            <td>${transaction.dateTime}</td>
-                                                                            <td>${transaction.description}</td>
-                                                                            <td>${transaction.amount}</td>
-                                                                        </tr>`;
+                                                                                                <tr>
+                                                                                                    <td>${transaction.dateTime}</td>
+                                                                                                    <td>${transaction.description}</td>
+                                                                                                    <td>${transaction.amount}</td>
+                                                                                                </tr>`;
                             });
                         } else {
                             alert("Invalid Account Number");
@@ -1095,11 +1132,11 @@
                 tableBody.innerHTML = "";
                 result.forEach(transaction => {
                     tableBody.innerHTML += `
-                                                                                    <tr>
-                                                                                        <td>${transaction.dateTime}</td>
-                                                                                        <td>${transaction.description}</td>
-                                                                                        <td>${transaction.amount}</td>
-                                                                                    </tr>`;
+                                                                                                            <tr>
+                                                                                                                <td>${transaction.dateTime}</td>
+                                                                                                                <td>${transaction.description}</td>
+                                                                                                                <td>${transaction.amount}</td>
+                                                                                                            </tr>`;
                 });
             }
 
@@ -1122,11 +1159,11 @@
                 tableBody.innerHTML = "";
                 result.forEach(transaction => {
                     tableBody.innerHTML += `
-                                                                                                <tr>
-                                                                                                    <td>${transaction.dateTime}</td>
-                                                                                                    <td>${transaction.description}</td>
-                                                                                                    <td>${transaction.amount}</td>
-                                                                                                </tr>`;
+                                                                                                                        <tr>
+                                                                                                                            <td>${transaction.dateTime}</td>
+                                                                                                                            <td>${transaction.description}</td>
+                                                                                                                            <td>${transaction.amount}</td>
+                                                                                                                        </tr>`;
                 });
 
 
