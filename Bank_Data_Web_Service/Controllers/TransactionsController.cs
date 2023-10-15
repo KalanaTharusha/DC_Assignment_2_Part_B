@@ -32,15 +32,23 @@ namespace Bank_Data_Web_Service.Controllers
             return await _context.Transaction.ToListAsync();
         }
 
-        // GET: api/Transactions/ get by acc Id
-        [HttpGet("accId/{id}")]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int id)
+        // GET: api/Transactions/ get by acc No
+        [HttpGet("no/{no}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByAccount(int no)
         {
             if (_context.Transaction == null)
             {
                 return NotFound();
             }
-            return await _context.Transaction.Where(t => t.AccountId == id).ToListAsync();
+
+            Account account = await _context.Account.Where(a => a.AccountNo == no).FirstOrDefaultAsync();
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Transaction.Where(t => t.AccountId == account.AccountId).ToListAsync();
         }
 
         // GET: api/Transactions/5
@@ -119,6 +127,7 @@ namespace Bank_Data_Web_Service.Controllers
                 if (balance > 0 && transaction.Amount < balance)
                 {
                     account.Balance = balance - transaction.Amount;
+                    transaction.Amount = 0 - transaction.Amount;
                 }
                 else
                 {

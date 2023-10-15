@@ -52,9 +52,20 @@ namespace Bank_Web_Application.Controllers
 
             if (user != null)
             {
-                if (user.Password.Equals(reqBody.Password)) 
+                try 
                 {
-                    return new ObjectResult(user) { StatusCode = 200 };
+                    if (user.Password.Equals(reqBody.Password))
+                    {
+                        return new ObjectResult(user) { StatusCode = 200 };
+                    }
+                }
+                catch(NullReferenceException ex) 
+                { 
+                    return Unauthorized();
+                }
+                catch (Exception ex)
+                {
+                    return Unauthorized();
                 }
             }
 
@@ -182,11 +193,32 @@ namespace Bank_Web_Application.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Transaction> GetTransactions([FromQuery] int id)
+        public IActionResult GetTransactions([FromQuery] int no)
         {
             client = new RestClient(DataService);
-            RestRequest request = new RestRequest("api/transactions/accId/{i}", Method.Get);
-            request.AddUrlSegment("i", id);
+            RestRequest request = new RestRequest("api/transactions/no/{no}", Method.Get);
+            request.AddUrlSegment("no", no);
+
+            RestResponse response = client.Execute(request);
+
+            try
+            {
+                IEnumerable<Transaction> transactions = JsonConvert.DeserializeObject<IEnumerable<Transaction>>(response.Content);
+                return new ObjectResult(transactions) { StatusCode = 200};
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            
+        }
+
+        [HttpGet]
+        public IEnumerable<Transaction> GetAllTransactions()
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/transactions", Method.Get);
 
             RestResponse response = client.Execute(request);
 
