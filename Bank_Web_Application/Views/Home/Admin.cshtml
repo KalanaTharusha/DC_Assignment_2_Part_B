@@ -6,10 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags and title remain the same -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Add this line to your HTML head section -->
+
 
     <title>Admin Dashboard</title>
     <style>
@@ -116,7 +116,7 @@
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center the content horizontally */
+            align-items: center; 
             margin-bottom: 10px;
         }
 
@@ -182,7 +182,7 @@
             text-transform: uppercase;
         }
 
-        /* User Management Section Styles */
+
 
         .userManagement {
             display: flex;
@@ -223,15 +223,15 @@
         .userManagement .user-list {
             display: flex;
             flex-direction: column;
-            align-items: flex-end; /* Align content to the right side */
+            align-items: flex-end;
         }
 
             .userManagement .user-list .action-buttons {
-                margin-top: 5px; /* Add space between table and buttons */
+                margin-top: 5px; 
             }
 
                 .userManagement .user-list .action-buttons button {
-                    margin-bottom: 5px; /* Add spacing between stacked buttons */
+                    margin-bottom: 5px;
                 }
 
         .search-users {
@@ -261,11 +261,11 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
-            width: 100%; /* Make the button the same width as the input field */
+            width: 100%;
         }
 
 
-        /* Button Styles (Reused from User Management Section) */
+
 
         button {
             padding: 10px 20px;
@@ -280,7 +280,7 @@
                 background-color: #655de8;
             }
 
-        /* User Listing Table Styles */
+
 
         table {
             width: 100%;
@@ -307,7 +307,6 @@
             background-color: #fff;
         }
 
-        /* Transaction Management Section Styles */
         .transactionManagement {
             display: flex;
             justify-content: space-around;
@@ -349,7 +348,7 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
-            width: 100%; /* Make the button the same width as the input field */
+            width: 100%; 
         }
 
         .edit-button button {
@@ -360,7 +359,7 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 3px;
-            width: 100%; /* Make the button the same width as the input field */
+            width: 100%; 
         }
 
         .transaction-list table {
@@ -374,10 +373,10 @@
             text-align: left;
         }
 
-        /* Add any additional styling as needed */
+
 
         .filter-sort-options {
-            margin: 10px 0; /* Updated margin for better spacing */
+            margin: 10px 0;
             display: flex;
             width: 100%;
             flex-direction: column;
@@ -385,8 +384,8 @@
         }
 
             .filter-sort-options label, .filter-sort-options select {
-                margin-bottom: 4px; /* Slightly reduced margin for better spacing */
-                font-size: 16px; /* Adjust font size for better readability */
+                margin-bottom: 4px; 
+                font-size: 16px; 
             }
 
 
@@ -398,7 +397,7 @@
             }
 
 
-        /* Transaction Listing Table Styles */
+   
 
         .transaction-list table {
             width: 100%;
@@ -425,9 +424,7 @@
             background-color: #fff;
         }
 
-        /* Add styles for security and access control section */
 
-        /* Activity Logs Section Styles */
 
         .activityLogs {
             background-color: #f5f5f5;
@@ -512,7 +509,7 @@
         }
 
         .sendButton {
-            width: 100%; /* Make the button as long as the input fields */
+            width: 100%;
             padding: 10px;
             margin: 5px;
             border: 1px solid #ccc;
@@ -587,6 +584,7 @@
             background: #EF665B;
             border-radius: 8px;
             box-shadow: 0px 0px 5px -3px #111;
+            z-index: 100;
         }
 
 
@@ -650,7 +648,6 @@
 
 
     <div class="card-container">
-        <!-- Admin Profile Information Section -->
         <div class="profile-card card">
             <div class="profileImage">
 
@@ -665,14 +662,12 @@
             </div>
 
             <div class="welcomeMessage welcomeMessage-right">
-                <!-- Add the welcomeMessage-right class -->
                 <p class="accountText"><b>Trust Bitcoin!</b> It's better than your bank :)</p>
 
             </div>
         </div>
 
 
-        <!-- Create User Section -->
         <div class="createUser card">
             <h2 class="card-title">Create User</h2>
 
@@ -707,11 +702,9 @@
 
         </div>
 
-        <!-- User Management Section -->
         <div class="userManagement card">
             <h2>User Management</h2>
 
-            <!-- Search Users -->
             <div class="search-users">
                 <div class="search-input">
                     <input type="text" id="searchUserInput" placeholder="Search users...">
@@ -723,7 +716,6 @@
                 </div>
             </div>
 
-            <!-- User Listing -->
             <div class="user-list" style="float: right;">
 
                 <table>
@@ -743,11 +735,9 @@
 
 
 
-        <!-- Transaction Management Section -->
         <div class="transactionManagement card">
             <h2>Transaction Management</h2>
 
-            <!-- Search Transactions -->
             <div class="search-transactions">
                 <div class="search-input">
                     <input type="text" id="searchTransactionInput" placeholder="Search transactions...">
@@ -763,21 +753,20 @@
                         <option value="All">All</option>
                         <option value="Withdrawals">Withdrawals</option>
                         <option value="Deposits">Deposits</option>
-                        <!-- Add more status options as needed -->
                     </select>
 
                     <label for="sortBy">Sort by:</label>
                     <select id="sortBy" onchange="sortOnChangeListener()">
                         <option value="None">None</option>
                         <option value="Date">Date - Newest to Oldest</option>
-                        <!-- Add more sorting options as needed -->
+
                     </select>
                 </div>
             </div>
 
-            <!-- Transaction Listing -->
+
             <div class="transaction-list">
-                <!-- Display a table or list of transaction records here -->
+
                 <table>
                     <thead>
                         <tr>
@@ -790,13 +779,13 @@
                         <tr>
 
                         </tr>
-                        <!-- Add more transaction rows as needed -->
+                        
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Activity Logs Section -->
+
         <div class="activityLogs card">
             <h2 class="section-title">Activity Logs</h2>
 
@@ -886,7 +875,7 @@
                     "email": email,
                     "address": address,
                     "phone": phone,
-                    "picture": picture,
+                    "picture": "https://source.unsplash.com/400x400/?portrait",
                     "password": password
                 };
 
@@ -903,11 +892,11 @@
                             var result = await response.json();
                             console.log(result);
 
-                            displayErrorMessageBox("User Created Successfully");
+                            displayErrorMessageBox("User Created Successfully", 3000);
                             logActions("User Created Successfully");
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account");
+                            displayErrorMessageBox("Invalid Account", 3000);
                             logActions("Invalid Account");
                         }
                     })
@@ -951,7 +940,7 @@
                                                                                                 </tr>`;
                             });
                         } else {
-                            displayErrorMessageBox("Invalid Account Number");
+                            displayErrorMessageBox("Invalid Account Number", 3000);
                         }
                     })
                     .catch(error => {
@@ -984,11 +973,11 @@
                             var result = await response.json();
                             console.log(result);
                             toggleEditUser();
-                            displayErrorMessageBox("User Updated Successfully");
+                            displayErrorMessageBox("User Updated Successfully", 2500);
                             
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account");
+                            displayErrorMessageBox("Invalid Account", 2500);
                             
                         }
                     })
@@ -1003,7 +992,7 @@
                 var confirmPassword = document.getElementById("confirmPassword").value;
 
                 if (password !== confirmPassword) {
-                    displayErrorMessageBox("Passwords do not match");
+                    displayErrorMessageBox("Passwords do not match", 3000);
                 }
                 else {
 
@@ -1020,7 +1009,7 @@
                             if (response.ok) {
                                 var result = await response.json();
                                 console.log(result);
-                                displayErrorMessageBox("User Updated Successfully");
+                                displayErrorMessageBox("User Updated Successfully", 3000);
 
                                 document.getElementById("password").value = "";
                                 document.getElementById("confirmPassword").value = "";
@@ -1028,7 +1017,7 @@
                                 logActions("User Updated Successfully");
                             }
                             else {
-                                displayErrorMessageBox("Invalid Account");
+                                displayErrorMessageBox("Invalid Account", 3000);
 
                             }
                         })
@@ -1050,10 +1039,10 @@
                         if (response.ok) {
                             var result = await response.json();
                             searchUsers();
-                            displayErrorMessageBox("Account Created Successfully! " + result.accountNo);
+                            displayErrorMessageBox("Account Created Successfully! ", 3000);
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account");
+                            displayErrorMessageBox("Invalid Account", 3000);
                         }
                     })
                     .catch(error => {
@@ -1073,10 +1062,10 @@
                         if (response.ok) {
                             searchUsers();
 
-                            logActions("User Deactivated Successfully");
+                            displayErrorMessageBox("User Deactivated Successfully", 3000);
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account");
+                            displayErrorMessageBox("Invalid Account", 3000);
                             
                         }
                     })
@@ -1100,7 +1089,7 @@
                             });
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account");
+                            displayErrorMessageBox("Invalid Account", 3000);
                         }
                     })
                     .catch(error => {
