@@ -13,7 +13,15 @@
             background: radial-gradient(328px at 2.9% 15%, rgb(191, 224, 251) 0%, rgb(232, 233, 251) 25.8%, rgb(252, 239, 250) 50.8%, rgb(234, 251, 251) 77.6%, rgb(240, 251, 244) 100.7%);
             background-size: cover;
         }
-        /* Base Styles */
+  
+
+        .error-message {
+            color: #A91B0D;
+            margin-left: 0.5rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
         .card {
             height: auto;
             background: white;
@@ -62,7 +70,7 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                object-position: center top; /* Center the image vertically */
+                object-position: center top;
             }
 
 
@@ -277,14 +285,6 @@
             overflow: auto;
         }
 
-        .error-message {
-            text-align: center;
-            color: #4F46E5;
-            font-size: 14px;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
         .popupContainer {
             position: fixed;
             display: none;
@@ -336,7 +336,7 @@
         }
 
         .sendButton {
-            width: 100%; /* Make the button as long as the input fields */
+            width: 100%;
             padding: 10px;
             margin: 5px;
             border: 1px solid #ccc;
@@ -346,16 +346,41 @@
             cursor: pointer;
         }
 
-        .error-message {
-            color: red;
-            margin-top: 5px;
-        }
+
 
         .editTitle {
             font-size: 1.5em;
             margin-top: 20px;
             font-weight: bold;
         }
+
+        .error-container {
+            position: fixed;
+            bottom: 0;
+            right: -100%; 
+            background-color: #A91B0D;
+            color: white;
+            text-align: center;
+            transition: right 0.5s ease-in-out;
+            width: 320px;
+            padding: 12px;
+            margin-bottom: 1.3rem;
+            margin-right: 1.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            background: #EF665B;
+            border-radius: 8px;
+            box-shadow: 0px 0px 5px -3px #111;
+        }
+
+
+        .error-text {
+            font-weight: 500;
+            margin: 0;
+        }
+
 
     </style>
 
@@ -368,9 +393,9 @@
             <div class="edit">
                 <p class="editTitle">Edit Details</p>
                 <p class="editFieldLabel">Password</p>
-                <input type="text" id="password" class="editField">
+                <input type="password" id="password" class="editField">
                 <p class="editFieldLabel">Confirm Password</p>
-                <input type="text" id="confirmPassword" class="editField">
+                <input type="password" id="confirmPassword" class="editField">
                 <button class="sendButton" onclick="resetPassword()">Edit</button>
                 <p id="errorMessage" class="error-message"></p>
             </div>
@@ -401,7 +426,7 @@
                     <div class="account-detail">
                         <p class="accountTitle">Account Number</p>
                         <select id="mapAccountId" class="formField" onchange="updateBalance()">
-                            <!-- Options will be populated via JavaScript -->
+                            
                         </select>
 
                     </div>
@@ -411,7 +436,7 @@
                     </div>
                 </div>
                 <div class="welcomeMessage welcomeMessage-right">
-                    <!-- Add the welcomeMessage-right class -->
+                    
                     <p class="accountText"><b>Trust Bitcoin!</b> It's better than your bank :)</p>
 
                 </div>
@@ -424,14 +449,16 @@
         <div class="transferCard card">
             <div class="transferMoney">
                 <p class="transferTitle">Transfer Money</p>
+                
                 <p class="formFieldLabel">Account Number</p>
                 <input type="text" id="recieverAccountNumber" class="formField">
                 <p class="formFieldLabel">Amount</p>
                 <input type="text" id="recieverAmount" class="formField">
                 <p class="formFieldLabel">Description</p>
                 <textarea id="recieverDescription" class="formField"></textarea>
-                <button class="sendButton" onclick="sendTransaction()">Send</button>
                 <p id="errorMessage" class="error-message"></p>
+                <button class="sendButton" onclick="sendTransaction()">Send</button>
+                
             </div>
         </div>
 
@@ -446,7 +473,7 @@
                             <th>Description</th>
                             <th>Amount</th>
                         </tr>
-                        <!-- Add more rows for additional transactions as needed -->
+                        
                     </table>
                 </div>
             </div>
@@ -454,10 +481,47 @@
 
     </div>
 
+    <div id="errorContainer" class="error-container">
+        <p id="errorText" class="error-text"></p>
+    </div>
+
+
     <script>
 
         var user;
         var personalTransactions;
+
+        function displayErrorMessageBox(message, timeout) {
+            const errorContainer = document.getElementById("errorContainer");
+            const errorText = document.getElementById("errorText");
+
+            errorText.textContent = message;
+
+            
+            errorContainer.style.right = "0";
+
+            if (timeout) {
+                setTimeout(function () {
+                    
+                    errorContainer.style.right = "-100%"; 
+                    setTimeout(function () {
+                        errorText.textContent = ''; 
+                    }, 500); 
+                }, timeout);
+            }
+        }
+
+        function displayErrorMessage(message, timeout) {
+            const errorMessageElement = document.getElementById("errorMessage");
+            errorMessageElement.textContent = message;
+            errorMessageElement.style.opacity = 1;
+            setTimeout(function () {
+                errorMessageElement.style.opacity = 0; 
+                setTimeout(function () {
+                    errorMessageElement.textContent = ''; 
+                }, 500); 
+            }, timeout);
+        }
 
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -493,7 +557,7 @@
                             return `<option value="${account.accountNo}">${account.accountNo}</option>`;
                         }).join('');
 
-                        // Fetch the details for the default selected account
+                        
                         const defaultAccountId = user.accounts[0].accountNo;
 
                         document.getElementById("accountBalance").textContent = 'LKR ' + user.accounts[0].balance;
@@ -532,16 +596,16 @@
                         var transactionTable = jsondata;
                         document.getElementById("transactions").innerHTML =
                             `<tr>
-                                    <th>Transaction Date</th>
-                                        <th>Description</th>
-                                        <th>Amount</th>
-                                        </tr>`;
+                                            <th>Transaction Date</th>
+                                                <th>Description</th>
+                                                <th>Amount</th>
+                                                </tr>`;
                         document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
                             return `<tr>
-                                                    <td>${transaction.dateTime}</td>
-                                                    <td>${transaction.description}</td>
-                                                    <td>LKR ${transaction.amount}</td>
-                                                    </tr>`;
+                                                            <td>${transaction.dateTime}</td>
+                                                            <td>${transaction.description}</td>
+                                                            <td>LKR ${transaction.amount}</td>
+                                                            </tr>`;
                         }).join('');
                     }
                     else {
@@ -565,10 +629,13 @@
 
         }
 
-        function postTransaction(accountNumber, amount, description) {
-            const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
+        function postTransaction() {
             const now = new Date();
             const date = now.toISOString();
+            const accountNumber = document.getElementById("recieverAccountNumber").value;
+            const amount = parseFloat(document.getElementById("recieverAmount").value);
+            const description = document.getElementById("recieverDescription").value;
+
             const a = document.getElementById("mapAccountId").value;
             var accountData = user.accounts.find(account => account.accountNo == a);
 
@@ -588,32 +655,20 @@
                     if (!response.ok) {
                         throw new Error('Request failed with status: ' + response.status);
                     }
-                    else {
-                        alert("Transaction Successful");
-
-                        document.getElementById("recieverAccountNumber").value = "";
-                        document.getElementById("recieverAmount").value = "";
-                        document.getElementById("recieverDescription").value = "";
-
-                    }
                     return response.json();
                 })
                 .then(data => {
-
-                    console.log('Success! Transaction posted:', data);
-                    errorMessageElement.textContent = 'Transaction Successful!';
-                    setTimeout(function () {
-                        errorMessageElement.textContent = '';
-                    }, 2000);
+                    displayErrorMessageBox('Transaction Successful', 5000);
+                    document.getElementById("recieverAccountNumber").value = "";
+                    document.getElementById("recieverAmount").value = "";
+                    document.getElementById("recieverDescription").value = "";
+                    displayErrorMessage('');
                 })
                 .catch(error => {
-
-                    errorMessageElement.textContent = 'Error: ' + error.message;
-                    setTimeout(function () {
-                        errorMessageElement.textContent = '';
-                    }, 2000);
+                    displayErrorMessage('Error: ' + error.message, 5000);
                 });
         }
+
 
         function toggleCard() {
 
@@ -625,39 +680,45 @@
             var password = document.getElementById("password").value;
             var confirmPassword = document.getElementById("confirmPassword").value;
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match");
+            if (!password || !confirmPassword) {
+                displayErrorMessage('Fields cannot be empty', 3000);
             }
             else {
+                if (password !== confirmPassword) {
+                    displayErrorMessage('Passwords do no match', 3000);
+                }
+                else {
 
-                user.password = password;
+                    user.password = password;
 
-                fetch("http://localhost:5237/bankApi/updateUser", {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(user)
-                })
-                    .then(async response => {
-                        if (response.ok) {
-                            var result = await response.json();
-                            console.log(result);
-                            alert("User Updated Successfully");
-
-                            document.getElementById("password").value = "";
-                            document.getElementById("confirmPassword").value = "";
-                            toggleCard();
-                            logActions("User Updated Successfully");
-                        }
-                        else {
-                            alert("Invalid Account");
-
-                        }
+                    fetch("http://localhost:5237/bankApi/updateUser", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(user)
                     })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                        .then(async response => {
+                            if (response.ok) {
+                                var result = await response.json();
+                                console.log(result);
+                                displayErrorMessageBox('Password Updated', 5000);
+                                
+
+                                document.getElementById("password").value = "";
+                                document.getElementById("confirmPassword").value = "";
+                                toggleCard();
+                                logActions("Password Updated Successfully");
+                            }
+                            else {
+                                displayErrorMessage('Invalid Account', 5000);
+
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
             }
         }
 
