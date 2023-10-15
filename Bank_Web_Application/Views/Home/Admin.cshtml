@@ -58,7 +58,7 @@
 
             .welcomeMessage.welcomeMessage-right {
                 font-size: 2rem;
-                font-weight: 700;
+                font-weight: 500;
                 text-align: right;
                 margin-top: auto;
                 margin-right: 20px;
@@ -448,7 +448,7 @@
             padding: 10px;
             border-radius: 5px;
             white-space: pre-wrap;
-            max-height: 600px;
+            max-height: 200px;
             width: 90%;
             overflow-y: auto;
             font-family: monospace;
@@ -629,7 +629,9 @@
             </div>
 
             <div class="welcomeMessage welcomeMessage-right">
-                <p class="accountText">Trust Bitcoin! It's better than your bank :)</p>
+                <!-- Add the welcomeMessage-right class -->
+                <p class="accountText"><b>Trust Bitcoin!</b> It's better than your bank :)</p>
+
             </div>
         </div>
 
@@ -714,23 +716,23 @@
                     <input type="text" id="searchTransactionInput" placeholder="Search transactions...">
                 </div>
                 <div class="search-button">
-                    <button onclick="searchTransactions()">Search</button>
+                    <button onclick="searchUserTransaction()">Search</button>
 
                 </div>
 
                 <div class="filter-sort-options">
               <label for="filterByStatus">Filter by Status:</label>
-                <select id="filterByStatus">
+                <select id="filterByStatus" onchange="filterOnChangeListener()">
                     <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
+                    <option value="Withdrawals">Withdrawals</option>
+                    <option value="Deposits">Deposits</option>
                     <!-- Add more status options as needed -->
                 </select>
 
                 <label for="sortBy">Sort by:</label>
-                <select id="sortBy">
-                    <option value="date">Date</option>
-                    <option value="amount">Amount</option>
+                <select id="sortBy" onchange="sortOnChangeListener()">
+                        <option value="None">None</option>
+                    <option value="Date">Date - Oldest to Newest</option>
                     <!-- Add more sorting options as needed -->
                 </select>
                 </div>
@@ -769,9 +771,8 @@
 
             <pre class="log-console">
             <code id="logs">
-[Log ID 1] AdminUser123: Modified user profile - 2023-10-14 10:30 AM
-[Log ID 2] AdminUser456: Created new user account - 2023-10-14 11:15 AM
-[Log ID 3] AdminUser789: Updated system settings - 2023-10-14 12:00 PM</code>
+                <br>
+            </code>
     </pre>
         </div>
 
@@ -893,7 +894,7 @@
                                                     <td>${account.accountNo}</td>
                                                     <td>${searchUser.name}</td>
                                                     <td>${searchUser.email}</td>
-                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="deactivateUser(${account.accountId})">Deactivate</button>` : `<button style="background-color: green;" onclick="activateUser(${account.accountId})">Activate</button>`}</td>
+                                                    <td class="buttonCell" >${account.status === 0 ? `<button style="background-color: red;" onclick="toggleUserAccount(${account.accountId})">Deactivate</button>` : `<button style="background-color: green;" onclick="toggleUserAccount(${account.accountId})">Activate</button>`}</td>
                                                 </tr>`;
                             });
                         } else {
@@ -946,11 +947,53 @@
 
             }
 
+            function toggleUserAccount(accountId) {
+                fetch("http://localhost:5237/bankApi/toggleAccount?accId=" + accountId, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(async response => {
+                        if (response.ok) {
+                            searchUsers();
 
-            function logActions(string) {
-                var logs = document.getElementById("logs");
-                logs.innerHTML += `${string} <br>`;
+                            logActions("User Deactivated Successfully");
+                        }
+                        else {
+                            alert("Invalid Account");
+                            logActions("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
             }
+
+            function refreshLogs(){
+
+                fetch("http://localhost:5237/bankApi/getLogs")
+                    .then(async response => {
+                        if (response.ok) {
+                            var result = await response.json();
+                            console.log(result);
+                            var logs = document.getElementById("logs");
+                            logs.innerHTML = "";
+                            result.forEach(log => {
+                                logs.innerHTML += `${log.timeStamp} : ${log.action} - ${log.logMessage}<br>`;
+                            });
+                        }
+                        else {
+                            alert("Invalid Account");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+
+            setInterval(refreshLogs, 2500);
 
             function toggleCard() {
                 document.getElementById("popup").classList.toggle("popupShow")
@@ -972,8 +1015,30 @@
                 password.value = searchUser.password;
 
                 document.getElementById("editUser").classList.toggle("popupShow")
+            }
+
+            function searchUserTransaction(){
+
+
 
             }
+
+            function sortOnChangeListener(){
+                
+            
+
+
+            }
+
+            function filterOnChangeListener() {
+
+
+
+            }
+
+
+
+
         </script>
 </body>
 </html>

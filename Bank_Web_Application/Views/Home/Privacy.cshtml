@@ -396,7 +396,10 @@
                 <div class="account-details">
                     <div class="account-detail">
                         <p class="accountTitle">Account Number</p>
-                        <p class="accountText" id="accountNumber">0000000000</p>
+                        <select id="mapAccountId" class="formField" onchange="updateBalance()">
+                            <!-- Options will be populated via JavaScript -->
+                        </select>
+                       
                     </div>
                     <div class="account-detail">
                         <p class="accountTitle">Current Balance</p>
@@ -471,7 +474,6 @@
         });
 
         function fetchUserDetails(email) {
-
             fetch("http://localhost:5237/bankApi/getUser?email=" + email)
                 .then(async response => {
                     if (response.ok) {
@@ -480,13 +482,19 @@
                         document.getElementById("name").textContent = user.name;
                         document.getElementById("email").textContent = user.email;
                         document.getElementById("phone").textContent = user.phone;
+
+                        const accountSelect = document.getElementById("mapAccountId");
+                        accountSelect.innerHTML = user.accounts.map(account => {
+                            return `<option value="${account.accountNo}">${account.accountNo}</option>`;
+                        }).join('');
+
+                        // Fetch the details for the default selected account
+                        const defaultAccountId = user.accounts[0].accountId;
                         document.getElementById("accountNumber").textContent = user.accounts[0].accountNo;
                         document.getElementById("accountBalance").textContent = 'LKR ' + user.accounts[0].balance;
-                        fetchAccounts(user.accounts[0].accountId);
-
-
-                    }
-                    else {
+                        fetchAccounts(defaultAccountId);
+                        
+                    } else {
                         alert("Invalid Account Number");
                     }
                 })
@@ -495,14 +503,24 @@
                 });
         }
 
+        function updateBalance(){
+
+            const accountNo = document.getElementById("mapAccountId").value;
+            const accountData = user.accounts.find(account => account.accountNo == accountNo);
+            document.getElementById("accountBalance").textContent = 'LKR ' + accountData.balance;
+            
+
+        }
+
+
         function fetchAccounts(accountId) {
+
             fetch("http://localhost:5237/bankApi/getTransactions?id=" + accountId)
                 .then(async response => {
                     if (response.ok) {
                         const jsondata = await response.json();
                         console.log(jsondata);
                         var transactionTable = jsondata;
-
 
                         document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
                             return `<tr>
