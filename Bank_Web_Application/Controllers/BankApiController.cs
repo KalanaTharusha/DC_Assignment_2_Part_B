@@ -72,6 +72,42 @@ namespace Bank_Web_Application.Controllers
             return Unauthorized();
         }
 
+        [HttpPost]
+        public IActionResult CreateAccount([FromQuery] int userId)
+        {
+            client = new RestClient(DataService);
+            RestRequest request = new RestRequest("api/users", Method.Get);
+            RestResponse response = client.Execute(request);
+
+            if(response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                User user = JsonConvert.DeserializeObject<User>(response.Content);
+
+                request = new RestRequest("api/accounts", Method.Post);
+                Account account = new Account();
+                account.AccountNo = (int)((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+                account.Balance = 0;
+                account.UserId = user.UserId;
+                account.Status = 0;
+                request.AddBody(account);
+                response = client.Execute(request);
+
+                Account createdAccount = JsonConvert.DeserializeObject<Account>(response.Content);
+
+                Log log = new Log();
+                log.TimeStamp = DateTime.Now;
+                log.Action = "Created";
+                log.LogMessage = "User account created: " + user.UserId;
+
+                CreateLog(log);
+
+                return new ObjectResult(createdAccount) { StatusCode = 201 };
+            }
+
+            return NotFound();
+        }
+
+
         [HttpGet]
         public User GetUser([FromQuery] string email)
         {
