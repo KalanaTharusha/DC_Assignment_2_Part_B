@@ -399,7 +399,7 @@
                         <select id="mapAccountId" class="formField" onchange="updateBalance()">
                             <!-- Options will be populated via JavaScript -->
                         </select>
-                       
+
                     </div>
                     <div class="account-detail">
                         <p class="accountTitle">Current Balance</p>
@@ -453,6 +453,7 @@
     <script>
 
         var user;
+        var personalTransactions;
 
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -489,11 +490,11 @@
                         }).join('');
 
                         // Fetch the details for the default selected account
-                        const defaultAccountId = user.accounts[0].accountId;
-                        document.getElementById("accountNumber").textContent = user.accounts[0].accountNo;
+                        const defaultAccountId = user.accounts[0].accountNo;
+
                         document.getElementById("accountBalance").textContent = 'LKR ' + user.accounts[0].balance;
                         fetchAccounts(defaultAccountId);
-                        
+
                     } else {
                         alert("Invalid Account Number");
                     }
@@ -503,31 +504,40 @@
                 });
         }
 
-        function updateBalance(){
+        function updateBalance() {
 
             const accountNo = document.getElementById("mapAccountId").value;
             const accountData = user.accounts.find(account => account.accountNo == accountNo);
             document.getElementById("accountBalance").textContent = 'LKR ' + accountData.balance;
-            
+
+
+            fetchAccounts(accountNo);
+
 
         }
 
 
-        function fetchAccounts(accountId) {
+        function fetchAccounts(accountNo) {
 
-            fetch("http://localhost:5237/bankApi/getTransactions?id=" + accountId)
+            fetch("http://localhost:5237/bankApi/getTransactions?no=" + accountNo)
                 .then(async response => {
                     if (response.ok) {
                         const jsondata = await response.json();
+
                         console.log(jsondata);
                         var transactionTable = jsondata;
-
+                        document.getElementById("transactions").innerHTML =
+                            `<tr>
+                                    <th>Transaction Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        </tr>`;
                         document.getElementById("transactions").innerHTML += transactionTable.map(transaction => {
                             return `<tr>
-                                            <td>${transaction.dateTime}</td>
-                                            <td>${transaction.description}</td>
-                                            <td>LKR ${transaction.amount}</td>
-                                            </tr>`;
+                                                    <td>${transaction.dateTime}</td>
+                                                    <td>${transaction.description}</td>
+                                                    <td>LKR ${transaction.amount}</td>
+                                                    </tr>`;
                         }).join('');
                     }
                     else {
@@ -548,12 +558,15 @@
             console.log(accountNumber, amount, description);
 
             postTransaction(accountNumber, amount, description);
+
         }
 
         function postTransaction(accountNumber, amount, description) {
             const errorMessageElement = document.getElementById("errorMessage"); // Get the error message element
             const now = new Date();
             const date = now.toISOString();
+            const a = document.getElementById("mapAccountId").value;
+            var accountData = user.accounts.find(account => account.accountNo == a);
 
             fetch("http://localhost:5237/bankApi/transfer?to=" + accountNumber, {
                 method: "POST",
@@ -562,7 +575,7 @@
                 },
                 body: JSON.stringify({
                     "amount": amount,
-                    "accountId": parseInt(user.accounts[0].accountId),
+                    "accountId": parseInt(accountData.accountId),
                     "description": description,
                     "dateTime": date
                 })
@@ -570,6 +583,14 @@
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Request failed with status: ' + response.status);
+                    }
+                    else {
+                        alert("Transaction Successful");
+
+                        document.getElementById("recieverAccountNumber").value = "";
+                        document.getElementById("recieverAmount").value = "";
+                        document.getElementById("recieverDescription").value = "";
+
                     }
                     return response.json();
                 })
