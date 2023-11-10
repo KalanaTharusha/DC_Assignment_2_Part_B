@@ -194,6 +194,10 @@ namespace Bank_Web_Application.Controllers
 
             try 
             {
+                if(a_response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    return NotFound();
+                }   
                 Account beneficiary = JsonConvert.DeserializeObject<Account>(a_response.Content);
                 Transaction deposit = new Transaction();
                 deposit.AccountId = beneficiary.AccountId;

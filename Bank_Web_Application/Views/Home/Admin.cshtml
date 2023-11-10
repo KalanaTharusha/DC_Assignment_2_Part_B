@@ -803,9 +803,15 @@
             var result;
             var transactions;
 
-            function displayErrorMessageBox(message, timeout) {
+            function displayErrorMessageBox(message, timeout, isError) {
                 const errorContainer = document.getElementById("errorContainer");
                 const errorText = document.getElementById("errorText");
+
+                if (!isError) {
+                    errorContainer.style.backgroundColor = "#4CAF50";
+                } else {
+                    errorContainer.style.backgroundColor = "#EF665B";
+                }
 
                 errorText.textContent = message;
 
@@ -892,11 +898,11 @@
                             var result = await response.json();
                             console.log(result);
 
-                            displayErrorMessageBox("User Created Successfully", 3000);
+                            displayErrorMessageBox("User Created Successfully", 3000, false);
                             logActions("User Created Successfully");
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account", 3000);
+                            displayErrorMessageBox("Invalid Account", 3000, true);
                             logActions("Invalid Account");
                         }
                     })
@@ -940,7 +946,7 @@
                                                                                                 </tr>`;
                             });
                         } else {
-                            displayErrorMessageBox("Invalid Account Number", 3000);
+                            displayErrorMessageBox("Invalid Account Number", 3000, true);
                         }
                     })
                     .catch(error => {
@@ -973,11 +979,11 @@
                             var result = await response.json();
                             console.log(result);
                             toggleEditUser();
-                            displayErrorMessageBox("User Updated Successfully", 2500);
+                            displayErrorMessageBox("User Updated Successfully", 2500, false);
                             
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account", 2500);
+                            displayErrorMessageBox("Invalid Account", 2500, true);
                             
                         }
                     })
@@ -992,7 +998,7 @@
                 var confirmPassword = document.getElementById("confirmPassword").value;
 
                 if (password !== confirmPassword) {
-                    displayErrorMessageBox("Passwords do not match", 3000);
+                    displayErrorMessageBox("Passwords do not match", 3000, true);
                 }
                 else {
 
@@ -1009,7 +1015,7 @@
                             if (response.ok) {
                                 var result = await response.json();
                                 console.log(result);
-                                displayErrorMessageBox("User Updated Successfully", 3000);
+                                displayErrorMessageBox("User Updated Successfully", 3000, false);
 
                                 document.getElementById("password").value = "";
                                 document.getElementById("confirmPassword").value = "";
@@ -1017,7 +1023,7 @@
                                 logActions("User Updated Successfully");
                             }
                             else {
-                                displayErrorMessageBox("Invalid Account", 3000);
+                                displayErrorMessageBox("Invalid Account", 3000, true);
 
                             }
                         })
@@ -1039,10 +1045,10 @@
                         if (response.ok) {
                             var result = await response.json();
                             searchUsers();
-                            displayErrorMessageBox("Account Created Successfully! ", 3000);
+                            displayErrorMessageBox("Account Created Successfully! ", 3000, false);
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account", 3000);
+                            displayErrorMessageBox("Invalid Account", 3000, true);
                         }
                     })
                     .catch(error => {
@@ -1062,10 +1068,10 @@
                         if (response.ok) {
                             searchUsers();
 
-                            displayErrorMessageBox("User Deactivated Successfully", 3000);
+                            displayErrorMessageBox("User Deactivated Successfully", 3000, false);
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account", 3000);
+                            displayErrorMessageBox("Invalid Account", 3000, true);
                             
                         }
                     })
@@ -1089,7 +1095,7 @@
                             });
                         }
                         else {
-                            displayErrorMessageBox("Invalid Account", 3000);
+                            displayErrorMessageBox("Invalid Account", 3000, true);
                         }
                     })
                     .catch(error => {
@@ -1107,7 +1113,7 @@
                 var name = document.getElementById("editNameInput");
                 var email = document.getElementById("editEmailInput");
                 var address = document.getElementById("editAddressInput");
-                var phone = parseInt(document.getElementById("editPhoneInput"));
+                var phone = document.getElementById("editPhoneInput");
                 var picture = document.getElementById("editPictureInput");
                 var password = document.getElementById("editPasswordInput");
 
