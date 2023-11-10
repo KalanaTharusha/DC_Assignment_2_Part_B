@@ -15,7 +15,15 @@
 
             .btn-custom:hover {
                 background-color: #655de8;
+                color: white;
+                transform: scale(1.05);
             }
+
+            .btn-custom:active {
+                background-color: #3b34b0; 
+                transform: scale(0.95);
+            }
+            
     </style>
 </head>
 <body>
@@ -32,7 +40,7 @@
                         @if (ViewContext.RouteData.Values["action"].ToString().Equals("Privacy", StringComparison.OrdinalIgnoreCase) || ViewContext.RouteData.Values["action"].ToString().Equals("Admin", StringComparison.OrdinalIgnoreCase))
                         {
                             <li class="nav-item">
-                                <button class="btn btn-custom" style="font-weight: 500;" onclick="logout()">Sign Out</button>
+                                <button class="btn btn-custom" style="font-weight: 500; " onclick="logout()">Sign Out</button>
                             </li>
                         }
                     </ul>

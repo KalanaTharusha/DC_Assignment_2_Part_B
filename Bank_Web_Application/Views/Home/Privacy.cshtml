@@ -373,6 +373,7 @@
             background: #EF665B;
             border-radius: 8px;
             box-shadow: 0px 0px 5px -3px #111;
+            z-index: 100;
         }
 
 
@@ -491,9 +492,15 @@
         var user;
         var personalTransactions;
 
-        function displayErrorMessageBox(message, timeout) {
+        function displayErrorMessageBox(message, timeout, isError) {
             const errorContainer = document.getElementById("errorContainer");
             const errorText = document.getElementById("errorText");
+
+            if (!isError) {
+                errorContainer.style.backgroundColor = "#4CAF50";
+            } else {
+                errorContainer.style.backgroundColor = "#EF665B";
+            }
 
             errorText.textContent = message;
 
@@ -564,7 +571,7 @@
                         fetchAccounts(defaultAccountId);
 
                     } else {
-                        alert("Invalid Account Number");
+                        displayErrorMessageBox('Invalid Account', 5000, true);
                     }
                 })
                 .catch(error => {
@@ -652,20 +659,24 @@
                 })
             })
                 .then(response => {
-                    if (!response.ok) {
+                    if (response.ok) {
+                        displayErrorMessageBox('Transaction Successful!', 5000, false);
+                    }
+                    else{
+                        displayErrorMessageBox('Transaction Failed', 5000, true);
                         throw new Error('Request failed with status: ' + response.status);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    displayErrorMessageBox('Transaction Successful', 5000);
+                    
                     document.getElementById("recieverAccountNumber").value = "";
                     document.getElementById("recieverAmount").value = "";
                     document.getElementById("recieverDescription").value = "";
-                    displayErrorMessage('');
+                    
                 })
                 .catch(error => {
-                    displayErrorMessage('Error: ' + error.message, 5000);
+                    displayErrorMessageBox('Transaction Failed', 5000, true);
                 });
         }
 
@@ -702,7 +713,7 @@
                             if (response.ok) {
                                 var result = await response.json();
                                 console.log(result);
-                                displayErrorMessageBox('Password Updated', 5000);
+                                displayErrorMessageBox('Password Updated', 5000, false);
                                 
 
                                 document.getElementById("password").value = "";
@@ -711,7 +722,7 @@
                                 logActions("Password Updated Successfully");
                             }
                             else {
-                                displayErrorMessage('Invalid Account', 5000);
+                                displayErrorMessageBox('Invalid Account', 5000, true);
 
                             }
                         })

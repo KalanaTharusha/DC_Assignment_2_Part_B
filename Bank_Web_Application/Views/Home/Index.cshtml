@@ -15,12 +15,14 @@
 
         }
 
+
+
     .error-message {
         color: #A91B0D;
         margin-left: 0.5rem;
         font-weight: 500;
-        opacity: 0; /* Initially, make it invisible */
-        transition: opacity 0.5s ease-in-out; /* Apply a smooth transition */
+        opacity: 0; 
+        transition: opacity 0.5s ease-in-out; 
     }
 
         .form {
@@ -99,6 +101,19 @@
             text-transform: uppercase;
         }
 
+        .submit:hover {
+                background-color: #4338CA;
+                transform: scale(1.02);
+                transition: all 0.2s ease-in-out;
+
+            }
+
+.submit:active {
+                background-color: #4F46E5;
+                transform: scale(1.02);
+                transition: all 0.2s ease-in-out;
+            }
+
     </style>
 </head>
 <body>
@@ -120,12 +135,12 @@
         async function displayErrorMessage(message, timeout) {
             const errorMessageElement = document.getElementById("errorMessage");
             errorMessageElement.textContent = message;
-            errorMessageElement.style.opacity = 1; // Make it visible
+            errorMessageElement.style.opacity = 1; 
             setTimeout(function () {
-                errorMessageElement.style.opacity = 0; // Fade out smoothly
+                errorMessageElement.style.opacity = 0; 
                 setTimeout(function () {
-                    errorMessageElement.textContent = ''; // Clear the message
-                }, 500); // Adjust the timeout to match the CSS transition time
+                    errorMessageElement.textContent = ''; 
+                }, 500); 
             }, timeout);
         }
 
@@ -151,7 +166,6 @@
                     .then(async response => {
                         if (response.ok) {
                             const jsondata = await response.json();
-                            // Store the JSON data in a cookie
                             const jsondataString = JSON.stringify(jsondata);
                             document.cookie = "user=" + jsondataString;
 
